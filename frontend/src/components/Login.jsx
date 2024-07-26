@@ -1,18 +1,19 @@
 import React from 'react'
+import { Link} from 'react-router-dom'
 import MapImg from '../img/map-image.png'
 
 function Login() {
   return (
     <div className="w-full h-full flex items-start">
             <div className='relative h-full flex-1 flex items-center justify-center flex-col'>
-                <div className='absolute login-text flex flex-col'>
-                    <h1 className='text-4x1 text-[#060606] font-bold my-4'>Wherever You Go, We Guide</h1>
-                    {/* <p className='text-xl text-white font-normal'>Start for free and get attractive offers from the community</p>*/}
+                <div className='absolute logo-text flex flex-col'>
+                    <h1 className='text-3xl text-[#060606] font-bold my-2'>Wherever You Go,</h1>
+                    <h2 className='text-2xl font-semibold my-1 text-[#5DB487]'>We Guide</h2>
                 </div>
                 <img src={MapImg} className="login-image" />
             </div>
-            <div className='flex-1 w-1/2 h-full bg-[#f5f5f5] flex flex-col p-20 justify-between items-center'>
-                <h1 className='max-w-[500px] mx-auto text-3xl text-[#5DB487] font-semibold mr-auto'>Compus</h1>
+            <div className='flex-1 w-1/2 h-full bg-[#f1f1f1] flex flex-col p-20 justify-between items-center'>
+                <h1 className='max-w-[500px] mx-auto text-4xl text-[#5DB487] font-semibold mr-auto'>Compus</h1>
 
                 <div className='w-full flex flex-col max-w-[500px]'>
                     <div className='w-full flex flex-col mb-2'>
@@ -42,11 +43,8 @@ function Login() {
                     </div>
                     <div className='w-full flex flex-col my-4'>
                         <button className='w-full text-white my-2 font-semibold bg-[#5DB487] rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
-                            Login
+                            <Link to="/home">Login</Link>
                         </button>
-                        {/* <button className='w-full text-[#060606] my-2 font-semibold bg-white border border-black rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
-                            Register
-                        </button> */}
                     </div>
 
                     <div className='w-full flex items-center justify-center relative py-2'>
@@ -57,7 +55,12 @@ function Login() {
                 </div>
 
                 <div className='w-full flex items-center justify-center'>
-                    <p className='text-sm font-normal text-[#060606]'>Don't have a account? <span className='font-semibold underline underline-offset-2 cursor-pointer text-[#5DB487]'>Register</span></p>
+                    <p className='text-sm font-normal text-[#060606]'>
+                    Don't have a account?
+                      <Link to="/signup" className='font-semibold underline underline-offset-2 cursor-pointer text-[#5DB487]'>
+                      Register
+                      </Link>
+                    </p>
                 </div>
 
             </div>
