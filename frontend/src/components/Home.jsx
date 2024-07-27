@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { TbMapPinSearch } from 'react-icons/tb'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import Logo from '../img/Compas logoo.png'
 import { MapComponent } from './MapComponent'
+import { SearchBar } from './SearchBar'
+import { mapData } from '../datas/data'
 
 
 function Home() {
@@ -16,15 +17,10 @@ function Home() {
     <div>
       <div className="search-bar-container !px-5">
         <div className='flex justify-center items-center'>
-          <img src={Logo} alt="Logo" className="logo" /><p className='logo-title'>Compus</p>
+          <img src={Logo} alt="Logo" className="logo mb-2" /><p className='ps-2 logo-title'>Compus</p>
         </div>
         
-        <div className='search-bar flex items-center justify-center flex-1'>
-          <input type="text" className="search-input" placeholder="Search..." />
-          <span>
-            <TbMapPinSearch className="search-icon pe-1" />
-          </span>
-        </div>
+        <SearchBar places={mapData} />
         
         {
           sidebarOpen 
@@ -33,8 +29,8 @@ function Home() {
         }
         <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
           <ul>
-            <li><a href="/signup">Signup</a></li>
-            <li><a href="/login">Login</a></li>
+            <a href="/signup"><li>Signup</li></a>
+            <a href="/login"><li>Login</li></a>
           </ul>
         </div>
       </div>

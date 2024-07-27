@@ -32,8 +32,6 @@
     align-items: center;
     width: 100%;
     padding: 20px 0;
-    /* background-color: #f1f1f1; */
-    /* border-bottom: 2px solid #f1f1f1; */
 }
   
 .search-input {
@@ -45,7 +43,6 @@
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 6px #9c9c9c;
 }
   
 .search-input:focus {
@@ -90,6 +87,7 @@
 
 .sidebar ul li {
     padding: 8px 16px;
+    margin-right: 1rem;
     text-align: center;
 }
 
