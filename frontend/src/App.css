@@ -10,3 +10,106 @@
 .login-image {
     width: 510px;
 }
+
+.logo {
+    position: absolute;
+    left: 20px; 
+    height: 50px; 
+    cursor: pointer;
+}
+
+.logo-title {
+    position: absolute;
+    left: 80px;
+    cursor: pointer;
+    font-size: larger;
+    font-weight: bold;
+    color: #5DB487;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+    /* background-color: #f1f1f1; */
+    border-bottom: 2px solid #f1f1f1;
+}
+  
+.search-input {
+    width: 60%;
+    max-width: 400px;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px #9c9c9c;
+}
+  
+.search-input:focus {
+    border-color: #5DB487;
+}
+
+.search-icon {
+    margin-left: -40px; 
+    color: #5db487;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.hamburger-menu {
+    position: absolute;
+    right: 20px; 
+    font-size: 24px;
+    cursor: pointer;
+    color: #5db487;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 150px;
+    height: 100%;
+    background-color: #f5f5f5;
+    padding-top: 70px; 
+    z-index: 1;
+    box-shadow: 0 4px 6px #9c9c9c;
+}
+
+.sidebar.open {
+    right: 0;
+    transition: right 0.3s ease;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 8px 16px;
+    text-align: center;
+}
+
+.sidebar ul li a {
+    color: #575757;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+    color: #5DB487;
+}
+
+.close-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #5db487;
+}

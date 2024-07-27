@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import MapImg from '../img/map-image.png'
 
 function Login() {
@@ -43,7 +43,7 @@ function Login() {
                     </div>
                     <div className='w-full flex flex-col my-4'>
                         <button className='w-full text-white my-2 font-semibold bg-[#5DB487] rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
-                            <Link to="/home">Login</Link>
+                            <Link to="/">Login</Link>
                         </button>
                     </div>
 
