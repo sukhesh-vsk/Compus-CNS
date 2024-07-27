@@ -46,7 +46,7 @@ function Signup() {
                     </div>
                     <div className='w-full flex flex-col my-4'>
                         <button className='w-full text-white my-2 font-semibold bg-[#5DB487] rounded-md p-4 text-center flex items-center justify-center cursor-pointer'>
-                            <Link to="/home">Signup</Link>
+                            <Link to="/">Signup</Link>
                         </button>
                     </div>
 
