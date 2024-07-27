@@ -12,15 +12,11 @@
 }
 
 .logo {
-    position: absolute;
-    left: 20px; 
     height: 50px; 
     cursor: pointer;
 }
 
 .logo-title {
-    position: absolute;
-    left: 80px;
     cursor: pointer;
     font-size: larger;
     font-weight: bold;
@@ -28,13 +24,16 @@
 }
 
 .search-bar-container {
+    position: absolute;
+    top: 0;
+    z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     padding: 20px 0;
     /* background-color: #f1f1f1; */
-    border-bottom: 2px solid #f1f1f1;
+    /* border-bottom: 2px solid #f1f1f1; */
 }
   
 .search-input {
@@ -54,18 +53,17 @@
 }
 
 .search-icon {
-    margin-left: -40px; 
+    margin-left: -40px;
     color: #5db487;
     cursor: pointer;
     font-size: 30px;
 }
 
-.hamburger-menu {
-    position: absolute;
-    right: 20px; 
+.hamburger-menu { 
     font-size: 24px;
     cursor: pointer;
     color: #5db487;
+    z-index: 9999;
 }
 
 .sidebar {
@@ -106,10 +104,8 @@
 }
 
 .close-icon {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 24px;
+    font-size: 25px;
     cursor: pointer;
     color: #5db487;
+    z-index: 9999;
 }
