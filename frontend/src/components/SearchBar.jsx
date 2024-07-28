@@ -26,7 +26,7 @@ export const SearchBar = ({ places, onPlaceSelect }) => {
             <div className='flex items-center justify-center flex-1'>
                 <input 
                     type="text"
-                    className={`search-input ${searchTerm === '' ? 'shadow-search' : ''}`}
+                    className={`search-input text-xs md:text-base ${searchTerm === '' ? 'shadow-search' : ''}`}
                     placeholder="Search campus locations"
                     value={searchTerm}
                     onChange={handleDataChange}

@@ -10,6 +10,13 @@ export default {
         search: '0 4px 6px #b7b7b796',
       },
     },
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+    },
   },
   plugins: [],
 }
