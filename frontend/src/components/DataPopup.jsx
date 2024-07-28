@@ -10,8 +10,18 @@ export const DataPopup = ({ data, hidden, togglePopup }) => {
           >
             X
           </span>
-        <h1 className='text-2xl font-bold'>{data?.features[0].properties["name"]}</h1>
-        <h4 className='text-md font-bold'>{data?.features[0].properties["description"]}</h4>
+        <div className='px-5'>
+          <p className='text-2xl font-bold tracking-wide mb-2 text-slate-900'>{`Name: ${data?.features[0].properties["name"]}`}</p>
+          <p className='text-md font-semibold tracking-wide mb-1 text-slate-700 '>{`Description: ${data?.features[0].properties["description"]}`}</p>
+            {
+              data?.features[0].properties["landmark"] && (
+                <p className='text-md font-semibold text-slate-700'>{`Landmark: ${data.features[0].properties["landmark"]}`}</p>
+              )
+            }
+            <div className='text-center mt-8'>
+              <button className='prime text-white px-5 py-2 rounded-lg'>Locate</button>
+            </div>
+        </div>
     </div>
   )
 }

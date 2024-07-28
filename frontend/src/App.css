@@ -117,3 +117,12 @@
 .data-popup {
     z-index: 9999;
 }
+
+
+.prime {
+    background-color: #4e9c74;
+}
+
+.prime:hover {
+    background-color: #478f6b;
+}

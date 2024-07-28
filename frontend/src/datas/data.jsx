@@ -71,7 +71,11 @@ export const mapData = {
         "features": [
           {
             "type": "Feature",
-            "properties": {},
+            "properties": {
+              "name": "Aroma",
+              "description": "It is food court in the campus. With various amenities around it.",
+              "landmark": "Backside to SKASC Placement Block."
+            },
             "geometry": {
               "coordinates": [
                 76.92322666294586,
