@@ -8,6 +8,7 @@ import { mapData } from '../datas/data'
 
 function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState("");
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -20,7 +21,7 @@ function Home() {
           <img src={Logo} alt="Logo" className="logo mb-2" /><p className='ps-2 logo-title'>Compus</p>
         </div>
         
-        <SearchBar places={mapData} />
+        <SearchBar places={mapData} onPlaceSelect={setSelectedPlace} />
         
         {
           sidebarOpen 
@@ -35,7 +36,7 @@ function Home() {
         </div>
       </div>
 
-      <MapComponent />
+      <MapComponent selectedPlace={selectedPlace}/>
 
     </div>
   )
