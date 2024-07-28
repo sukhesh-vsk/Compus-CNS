@@ -42,7 +42,7 @@ export const SearchBar = ({ places, onPlaceSelect }) => {
                         return (
                             <div 
                                 key={place}
-                                className='search-result text-sm text-slate-600 font-medium'
+                                className='search-result text-sm text-slate-600 font-medium cursor-pointer my-1 hover:text-slate-700'
                                 onClick={() => handleSearch(place)}
                             >
                                 {place}

@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { MapContainer, Marker, Popup, TileLayer, useMap, GeoJSON } from 'react-leaflet'
+import React, { useEffect, useState } from 'react';
+import { MapContainer, Marker, TileLayer, useMap, GeoJSON } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { mapData, mapLayout, minimumPath } from '../datas/data';
 import { ShowMinPath } from '../hooks';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const position = [10.927957575535572, 76.92397088319751];
 const bounds = [
     [10.933617318578328, 76.91699650949829],
     [10.921825692919896, 76.93112560982775]
 ];
-const location = [76.9252057220969,10.926064290568462];
+const location = [76.9252057220969, 10.926064290568462];
 
 const FitBounds = () => {
     const map = useMap();
@@ -19,10 +23,27 @@ const FitBounds = () => {
     }, [map]);
   
     return null;
-}
+};
 
+const createCustomIcon = (label) => {
+  return L.divIcon({
+    className: 'custom-label',
+    html: `<div class="text-xs">${label}</div>`,
+    iconAnchor: [15, -2] 
+  });
+};
 
-const MapComponent = ({ selectedPlace }) => {
+const smallIcon = new L.Icon({
+    iconUrl: markerIcon,
+    iconRetinaUrl: markerIcon2x,
+    shadowUrl: markerShadow,
+    iconSize: [18, 28], 
+    iconAnchor: [7.5, 25], 
+    popupAnchor: [0, -25],
+    shadowSize: [25, 25] 
+});
+
+const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
     const [currentPath, setCurrentPath] = useState(null);
     const [clearingPath, setClearingPath] = useState(false);
 
@@ -50,7 +71,7 @@ const MapComponent = ({ selectedPlace }) => {
         <MapContainer 
             center={position} 
             zoom={13} 
-            zoomControl = {false}
+            zoomControl={false}
             style={{ height: "100vh", width: "100%" }}>
             
             {/* Loading Basemap */}
@@ -61,20 +82,34 @@ const MapComponent = ({ selectedPlace }) => {
                 minZoom={17} 
                 maxZoom={20} 
             />
+
             {/* Setting initial bound to load */}
             <FitBounds />
 
             {/* Adding place markers */}
             {Object.keys(mapData).map((key, index) => {
                 return mapData[key].features.map((feature, index) => {
+                    const position = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]];
                     return (
-                        <Marker key={index} position={[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]}>
-                            <Popup>
-                                {key}
-                            </Popup>
-                        </Marker>
-                    )
-                })
+                        <React.Fragment key={index}>
+                            <Marker 
+                                position={position}
+                                eventHandlers={{
+                                    click: () => {
+                                        markerData(key);
+                                        togglePopup(true);
+                                    },
+                                }}
+                                icon={smallIcon}
+                            />
+                            <Marker
+                                position={position}
+                                icon={createCustomIcon(key)}
+                                interactive={false} 
+                            />
+                        </React.Fragment>
+                    );
+                });
             })}
 
             {/* Adding building blocks */}
@@ -82,7 +117,7 @@ const MapComponent = ({ selectedPlace }) => {
                 Object.keys(mapLayout).map((key, index) => {
                     return (
                         <GeoJSON key={index} data={mapLayout[key]} />
-                    )
+                    );
                 })
             }
 
@@ -90,7 +125,7 @@ const MapComponent = ({ selectedPlace }) => {
             {currentPath && <ShowMinPath userLocation={location} place={currentPath} />}
         </MapContainer>
     </div>
-  )
-}
+  );
+};
 
-export { MapComponent }
+export { MapComponent };

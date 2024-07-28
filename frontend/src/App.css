@@ -112,3 +112,8 @@
     color: #5db487;
     z-index: 9999;
 }
+
+
+.data-popup {
+    z-index: 9999;
+}

@@ -20,7 +20,10 @@ export const mapData = {
         "features": [
           {
             "type": "Feature",
-            "properties": {},
+            "properties": {
+              "name": "ES Block",
+              "description": "Electrical Sciences Block."
+            },
             "geometry": {
               "coordinates": [
                 76.92415320802343,

@@ -4,11 +4,14 @@ import Logo from '../img/Compas logoo.png'
 import { MapComponent } from './MapComponent'
 import { SearchBar } from './SearchBar'
 import { mapData } from '../datas/data'
+import { DataPopup } from './DataPopup'
 
 
 function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState("");
+  const [placeInfo, setPlaceInfo] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -36,7 +39,9 @@ function Home() {
         </div>
       </div>
 
-      <MapComponent selectedPlace={selectedPlace}/>
+      <MapComponent selectedPlace={selectedPlace} markerData={setPlaceInfo} togglePopup={setShowPopup}/>
+      
+      {showPopup && <DataPopup data={mapData[placeInfo]} hidden={showPopup} togglePopup={setShowPopup} />}
 
     </div>
   )
