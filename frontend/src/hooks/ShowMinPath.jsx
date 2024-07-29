@@ -7,5 +7,5 @@ export const ShowMinPath = ({userLocation, place}) => {
         return null;
     }
 
-    return <GeoJSON data={place} style={{color: "green"}}/>;
+    return <GeoJSON data={place} style={{ color: "yellow" }}/>;
 }

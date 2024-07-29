@@ -38,7 +38,7 @@ export const SearchBar = ({ places, onPlaceSelect }) => {
             </div>
             {(showResults && matchSearchTerm.length > 0 && searchTerm !== '') && 
                 (<div className='absolute search-input mt-14 bg-white shadow-search'>
-                    {matchSearchTerm.slice(0, 6).map((place) => {
+                    {matchSearchTerm.slice(0, 8).map((place) => {
                         return (
                             <div 
                                 key={place}
