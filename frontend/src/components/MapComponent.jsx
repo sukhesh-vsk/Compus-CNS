@@ -8,7 +8,6 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import userIco from '../img/user.png';
-import { env } from '../../env';
 
 const position = [10.927957575535572, 76.92397088319751];
 const bounds = [
@@ -85,7 +84,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
                 {/* Loading Basemap */}
                 <TileLayer 
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url={env.mapURL}
+                    url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
                     zoom={18}
                     minZoom={17}
                     maxZoom={20}
