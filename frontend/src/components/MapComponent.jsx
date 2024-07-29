@@ -84,7 +84,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
                 {/* Loading Basemap */}
                 <TileLayer 
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
                     zoom={18}
                     minZoom={17}
                     maxZoom={20}
