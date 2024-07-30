@@ -5,7 +5,7 @@ export const DataPopup = ({ data, hidden, togglePopup }) => {
   return (
     <div className='flex flex-col bg-gray-200 h-80 data-popup w-full p-4 absolute bottom-0 rounded-t-3xl border-gray-300 border-2'>
         <span 
-          className='w-full text-end font-semibold pe-5 cursor-pointer'
+          className='w-full text-end font-bold pe-5 cursor-pointer text-[#5db487]'
           onClick={() => togglePopup(false)}
           >
             X

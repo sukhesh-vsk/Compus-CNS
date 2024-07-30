@@ -3,8 +3,16 @@
 @tailwind utilities;
 
 .logo-text {
-    top: 50px;
-    left: 30px;
+    top: 0;
+    left: 20px;
+    text-align: left;
+}
+
+@media (min-width: 768px) {
+    .logo-text {
+        top: 50px;
+        left: 30px;
+    }
 }
 
 .login-image {
