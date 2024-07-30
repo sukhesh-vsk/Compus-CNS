@@ -39,6 +39,7 @@ function Home() {
           <ul>
             <a href="/signup"><li>Signup</li></a>
             <a href="/login"><li>Login</li></a>
+            <li>Favourites</li>
           </ul>
         </div>
       </div>
