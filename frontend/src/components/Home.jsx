@@ -5,6 +5,7 @@ import { MapComponent } from './MapComponent'
 import { SearchBar } from './SearchBar'
 import { mapData } from '../datas/data'
 import { DataPopup } from './DataPopup'
+import { IoIosArrowDown } from "react-icons/io";
 
 
 function Home() {
@@ -39,7 +40,10 @@ function Home() {
           <ul>
             <a href="/signup"><li>Signup</li></a>
             <a href="/login"><li>Login</li></a>
-            <li>Favourites</li>
+            <div className='flex flex-row items-center cursor-pointer'>
+              <a><li>Favourites</li></a>
+              <a><li><IoIosArrowDown /></li></a>
+            </div>
           </ul>
         </div>
       </div>

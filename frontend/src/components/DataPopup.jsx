@@ -20,9 +20,9 @@ export const DataPopup = ({ data, hidden, togglePopup }) => {
         <div className='flex justify-between items-center mb-2'>
           <p className='text-2xl font-bold tracking-wide text-slate-900'>{`Name: ${data?.features[0].properties["name"]}`}</p>
           <div className='flex space-x-4 mr-4'>
-            <button className='prime text-white px-5 py-2 rounded-lg'>Locate</button>
+            <button className='prime text-white px-5 py-2 rounded-lg font-semibold'>Locate</button>
             <button
-              className='flex items-center text-[#5DB487] text-grey px-5 py-2 rounded-lg border border-[#5DB487]'
+              className='flex items-center text-[#5DB487] text-grey px-5 py-2 rounded-lg border border-[#5DB487] font-semibold'
               onClick={handleFavoriteClick}
             >
               {isFavorited ? <FaHeart className='mr-2' /> : <FaRegHeart className='mr-2' />} 
