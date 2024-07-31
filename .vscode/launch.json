@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-CnsApplication<cns>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.compus.cns.CnsApplication",
+            "projectName": "cns",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
