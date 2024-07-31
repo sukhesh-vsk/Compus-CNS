@@ -6,7 +6,7 @@ export const DataPopup = ({ data, hidden, togglePopup }) => {
 
   const handleFavoriteClick = () => {
     setIsFavorited(!isFavorited);
-  };
+  }
 
   return (
     <div className='flex flex-col h-60 fixed bg-gray-200 data-popup w-full p-4 absolute bottom-0 rounded-t-3xl border-gray-300 border-2'>

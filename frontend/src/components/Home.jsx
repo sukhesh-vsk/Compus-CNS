@@ -5,7 +5,7 @@ import { MapComponent } from './MapComponent'
 import { SearchBar } from './SearchBar'
 import { mapData } from '../datas/data'
 import { DataPopup } from './DataPopup'
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 
 function Home() {
@@ -13,6 +13,7 @@ function Home() {
   const [selectedPlace, setSelectedPlace] = useState("");
   const [placeInfo, setPlaceInfo] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [showFavourite, setShowFavourite] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -20,6 +21,10 @@ function Home() {
 
   const reloadPage = () => {
     window.location.reload();
+  }
+
+  const handleFavourite = () => {
+    setShowFavourite(!showFavourite);
   }
 
   return (
@@ -36,15 +41,16 @@ function Home() {
           ? <FaTimes className="close-icon" onClick={toggleSidebar} />
           : <FaBars className="hamburger-menu" onClick={toggleSidebar} />
         }
-        <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-          <ul>
-            <a href="/signup"><li>Signup</li></a>
-            <a href="/login"><li>Login</li></a>
-            <div className='flex flex-row items-center cursor-pointer'>
-              <a><li>Favourites</li></a>
-              <a><li><IoIosArrowDown /></li></a>
-            </div>
-          </ul>
+        <div className={`sidebar flex flex-col gap-4 items-start ps-5 text-slate-700 ${sidebarOpen ? 'open' : ''}`}>
+            <a>Admin</a>
+            <a href="/signup" className='hover:text-emerald-600'>Signup</a>
+            <a href="/login" className='hover:text-emerald-600'>Login</a>
+            <a className='flex flex-row justify-around items-center cursor-pointer hover:text-emerald-600' onClick={handleFavourite}>
+                <span className='flex items-center'>
+                  Favourites
+                  {showFavourite ? <IoIosArrowUp className='ml-1'/>: <IoIosArrowDown className='ml-1'/>}
+                </span>
+            </a>
         </div>
       </div>
 

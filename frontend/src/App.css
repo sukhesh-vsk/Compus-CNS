@@ -94,23 +94,6 @@
     transform: translateX(0);
 }
 
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    padding: 8px 16px;
-    /* margin-right: 1rem; */
-    text-align: center;
-    color: #575757;
-    font-size: 16px;
-}
-
-.sidebar ul li:hover {
-    color: #5db487;
-}
-
 .close-icon {
     font-size: 25px;
     cursor: pointer;
