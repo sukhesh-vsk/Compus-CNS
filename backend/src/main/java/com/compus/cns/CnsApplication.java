@@ -11,7 +11,7 @@ public class CnsApplication {
 
 	@RequestMapping("/")
 	public String home() {
-			return "Hello Worlddhgy! Hi guys";
+		return "Hello Worlddhgy! Hi guys";
 	}
 
 	public static void main(String[] args) {
