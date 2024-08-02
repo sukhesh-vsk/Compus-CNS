@@ -4,3 +4,4 @@ export { Home } from './Home.jsx';
 export { MapComponent } from './MapComponent.jsx';
 export { SearchBar } from './SearchBar.jsx';
 export { DataPopup } from './DataPopup.jsx';
+export { AdminDashboard } from './AdminDashboard.jsx';
