@@ -1,1 +1,2 @@
-export { ManagePlace } from './ManagePlace'
+export { ManagePlace } from './ManagePlace';
+export { ViewPlaces } from './ViewPlaces';

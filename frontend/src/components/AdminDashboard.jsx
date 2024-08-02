@@ -3,7 +3,7 @@ import { FaBars, FaUserCircle, FaHome, FaPlusCircle } from 'react-icons/fa';
 import { IoRemoveCircle } from 'react-icons/io5';
 import { IoMdLogOut } from 'react-icons/io';
 import { MdGridView } from 'react-icons/md';
-import { ManagePlace } from './admin';
+import { ManagePlace, ViewPlaces } from './admin';
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
             </a>
           </li>
           <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2'>
-            <a href='' className='px-3'>
+            <a href='/login' className='px-3'>
               <IoMdLogOut className='inline-block w-6 h-6 mr-2 -mt-2' />
               Logout
             </a>
@@ -59,9 +59,9 @@ const AdminDashboard = () => {
         </ul>
       </div>
 
-      <div className={`flex flex-col flex-1 transition-all`}>
+      <div className={`flex flex-col flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-0' : '-ml-64'}`}>
         {/* Navbar */}
-        <nav className='px-4 py-3 w-full flex justify-between bg-[#5DB487]'>
+        <nav className='px-4 py-3 flex justify-between bg-[#5DB487]'>
           <div className='flex items-center text-xl'>
             <FaBars className='text-white me-4 cursor-pointer' onClick={toggleSidebar} />
             <span className='text-white font-semibold'>Compus</span>
@@ -82,7 +82,7 @@ const AdminDashboard = () => {
         
         {/* Main Dashboard Content */}
         <div className='flex-1 p-4'>
-          {showForm && (<ManagePlace />)}
+          {showForm && (<ViewPlaces />)}
         </div>
       </div>
     </div>
