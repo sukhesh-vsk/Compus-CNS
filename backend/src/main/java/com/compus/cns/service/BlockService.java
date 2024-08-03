@@ -1,6 +1,7 @@
 package com.compus.cns.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,5 +16,14 @@ public class BlockService {
 	
 	public List<Blocks> getAllBlocks() {
 		return block.findAll();
+	}
+	
+	public Blocks addBlock(Blocks data) {
+		return block.saveAndFlush(data);
+	}
+	
+	public Optional<Blocks> findByName(String name) {
+		Optional<Blocks> blockData = block.findByName(name);
+		return blockData;
 	}
 }
