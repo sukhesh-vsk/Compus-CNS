@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
-import { FaBars, FaUserCircle, FaHome, FaPlusCircle } from 'react-icons/fa';
+import { FaBars, FaUserCircle, FaHome } from 'react-icons/fa';
 import { IoMdLogOut } from 'react-icons/io';
 import { MdGridView } from 'react-icons/md';
 import { ViewPlaces } from './admin';
