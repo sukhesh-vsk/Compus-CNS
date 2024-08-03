@@ -123,7 +123,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
                 {
                     Object.keys(mapLayout).map((key, index) => {
                         return (
-                            <GeoJSON key={index} data={mapLayout[key]} style={{color: "#E97451"}} />
+                            <GeoJSON key={index} data={mapLayout[key]} style={{color: "#008ECC"}} />
                         );
                     })
                 }

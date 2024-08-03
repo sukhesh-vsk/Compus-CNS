@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
-import { FaBars, FaTimes } from 'react-icons/fa'
-import Logo from '../img/Compas logoo.png'
-import { MapComponent } from './MapComponent'
-import { SearchBar } from './SearchBar'
-import { mapData } from '../datas/data'
-import { DataPopup } from './DataPopup'
-
+import React, { useState } from 'react';
+import { FaBars, FaTimes } from 'react-icons/fa';
+import Logo from '../img/Compas logoo.png';
+import { MapComponent } from './MapComponent';
+import { SearchBar } from './SearchBar';
+import { mapData } from '../datas/data';
+import { DataPopup } from './DataPopup';
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState("");
   const [placeInfo, setPlaceInfo] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [showFavourite, setShowFavourite] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -19,6 +20,11 @@ function Home() {
 
   const reloadPage = () => {
     window.location.reload();
+  }
+
+  const handleFavourite = () => {
+    setShowFavourite(!showFavourite);
+    console.log("Favourites toggled", !showFavourite);
   }
 
   return (
@@ -35,18 +41,29 @@ function Home() {
           ? <FaTimes className="close-icon" onClick={toggleSidebar} />
           : <FaBars className="hamburger-menu" onClick={toggleSidebar} />
         }
-        <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-          <ul>
-            <a href="/signup"><li>Signup</li></a>
-            <a href="/login"><li>Login</li></a>
-          </ul>
+        <div className={`sidebar flex flex-col gap-4 items-start ps-5 text-slate-700 ${sidebarOpen ? 'open' : ''}`}>
+            <a href="/admindashboard" className='cursor-pointer hover:text-emerald-600'>Admin</a>
+            <a href="/signup" className='hover:text-emerald-600'>Signup</a>
+            <a href="/login" className='hover:text-emerald-600'>Login</a>
+            <a className='flex flex-row justify-around items-center cursor-pointer hover:text-emerald-600' onClick={handleFavourite}>
+                <span className='flex items-center'>
+                  Favourites
+                  {showFavourite ? <IoIosArrowUp className='ml-1'/>: <IoIosArrowDown className='ml-1'/>}
+                </span>
+            </a>
+            <ul className={`flex flex-col pl-1 ${showFavourite ? 'block' : 'hidden'}`}>
+              <li className='hover:text-emerald-600 cursor-pointer'>Aroma</li>
+              <li className='hover:text-emerald-600 cursor-pointer'>PG Seminar</li>
+              <li className='hover:text-emerald-600 cursor-pointer'>Vankatram Hall</li>
+              <li className='hover:text-emerald-600 cursor-pointer'>CB2 - 103</li>
+              <li className='hover:text-emerald-600 cursor-pointer'>ZOHO Lab</li>
+            </ul>
         </div>
       </div>
 
       <MapComponent selectedPlace={selectedPlace} markerData={setPlaceInfo} togglePopup={setShowPopup}/>
       
       {showPopup && <DataPopup data={mapData[placeInfo]} hidden={showPopup} togglePopup={setShowPopup} />}
-
     </div>
   )
 }
