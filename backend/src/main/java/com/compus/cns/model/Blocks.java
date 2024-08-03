@@ -1,7 +1,11 @@
 package com.compus.cns.model;
 
+import org.locationtech.jts.geom.Point;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
@@ -10,40 +14,62 @@ public class Blocks {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name, description, block, landmark;
+    private String name;
+    private String description;
+    private String block;
+    private String landmark;
 
-    @Type(type = "org.hibernate.spatial.GeometryType")
+    @Column(columnDefinition = "Geometry(Point, 4326)")
     private Point coords;
 
-    public Location() {}
+    
+   // Getters and Setters
+   
+	public Long getId() {
+		return id;
+	}
 
-    public Location(String name, Point coordinates) {
-        this.name = name;
-        this.coordinates = coordinates;
-    }
+	public String getName() {
+		return name;
+	}
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getBlock() {
+		return block;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getLandmark() {
+		return landmark;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public Point getCoords() {
+		return coords;
+	}
 
-    public Point getCoordinates() {
-        return coordinates;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setCoordinates(Point coordinates) {
-        this.coordinates = coordinates;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setBlock(String block) {
+		this.block = block;
+	}
+
+	public void setLandmark(String landmark) {
+		this.landmark = landmark;
+	}
+
+	public void setCoords(Point coords) {
+		this.coords = coords;
+	}
 } 

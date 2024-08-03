@@ -91,27 +91,7 @@
 .sidebar.open {
     right: 0;
     transition: right 0.3s ease;
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    padding: 8px 16px;
-    margin-right: 1rem;
-    text-align: center;
-}
-
-.sidebar ul li a {
-    color: #575757;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-.sidebar ul li a:hover {
-    color: #5DB487;
+    transform: translateX(0);
 }
 
 .close-icon {
@@ -121,11 +101,9 @@
     z-index: 9999;
 }
 
-
 .data-popup {
     z-index: 9999;
 }
-
 
 .prime {
     background-color: #4e9c74;
