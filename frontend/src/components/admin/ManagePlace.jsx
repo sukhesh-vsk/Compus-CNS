@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const ManagePlace = () => {
+const ManagePlace = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         setShowForm(false);
@@ -41,3 +41,5 @@ export const ManagePlace = () => {
     </div>
   )
 }
+
+export { ManagePlace }
