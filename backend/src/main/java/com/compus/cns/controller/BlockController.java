@@ -34,13 +34,15 @@ public class BlockController {
 	}
 	
 	@PostMapping("/add")
-    public ResponseEntity<String> addBlock(@RequestBody BlocksDTO data) {
-        validateBlockData(data);
-        
-        Blocks blockEntity = convertToEntity(data);
-        blockServ.addBlock(blockEntity);
+    public ResponseEntity<String> addBlock(@RequestBody List<BlocksDTO> data) {
+		
+        data.forEach(this::validateBlockData);
+        List<Blocks> blockEntity = data.stream()
+        								.map(this::convertToEntity)
+        								.collect(Collectors.toList());
+        blockServ.addBlocks(blockEntity);
 
-        return new ResponseEntity<>("Success", HttpStatus.CREATED);
+        return new ResponseEntity<>("New Block Added", HttpStatus.CREATED);
     }
 
     private void validateBlockData(BlocksDTO data) {
@@ -48,10 +50,10 @@ public class BlockController {
             throw new BadRequestException("Name should not be null");
         }
         if (data.getCoords() == null || data.getCoords().size() != 2 || data.getCoords().contains(null)) {
-            throw new BadRequestException("Invalid coordinates data format");
+            throw new BadRequestException(data.getName() + ": Invalid coordinates data format. Please provide exactly two non-null values for 'coords'.");
         }
         if (!blockServ.findByName(data.getName()).isEmpty()) {
-            throw new ConflictException("Block data already exists");
+            throw new ConflictException("Data for " + data.getName() + " already exists");
         }
     }
 
