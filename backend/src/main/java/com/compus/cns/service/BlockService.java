@@ -18,8 +18,8 @@ public class BlockService {
 		return block.findAll();
 	}
 	
-	public Blocks addBlock(Blocks data) {
-		return block.saveAndFlush(data);
+	public List<Blocks> addBlocks(List<Blocks> data) {
+		return block.saveAllAndFlush(data);
 	}
 	
 	public Optional<Blocks> findByName(String name) {
