@@ -29,8 +29,7 @@ services:
   #     - compus_net
 
   db:
-    build:
-      context: ./db
+    image: postgis/postgis:13-3.4-alpine
     container_name: post_db
     restart: always
     environment:
