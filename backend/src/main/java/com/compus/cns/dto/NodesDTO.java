@@ -1,16 +1,14 @@
 package com.compus.cns.dto;
 
-import java.util.List;
-
 public class NodesDTO {
-    private List<Double> coords;
+    private double[] coords;
     private String desc;
 
     // Getters and Setters
-    public List<Double> getCoords() {
+    public double[] getCoords() {
         return coords;
     }
-    public void setCoords(List<Double> coords) {
+    public void setCoords(double[] coords) {
         this.coords = coords;
     }
     public String getDesc() {

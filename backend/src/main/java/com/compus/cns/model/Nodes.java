@@ -1,6 +1,8 @@
 package com.compus.cns.model;
 
-import org.geolatte.geom.Point;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,12 +31,13 @@ public class Nodes {
         this.id = id;
     }
 
-    public Point getCoords() {
-        return coords;
+    public double[] getCoords() {
+        return new double[] {this.coords.getX(), this.coords.getY()};
     }
 
-    public void setCoords(Point coords) {
-        this.coords = coords;
+    public void setCoords(double[] coords) {
+        GeometryFactory geom = new GeometryFactory();
+        this.coords = geom.createPoint(new Coordinate(coords[0], coords[1]));
     }
 
     public String getDescription() {

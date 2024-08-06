@@ -9,6 +9,7 @@ import com.compus.cns.service.NodeService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,19 @@ public class NodeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<List<NodesDTO>> addNodes(@RequestBody List<NodesDTO> data) {
-        return new ResponseEntity<>(nodeServ.addNodes(data), HttpStatus.CREATED);
+    public ResponseEntity<List<Nodes>> addNodes(@RequestBody List<NodesDTO> data) {
+    	List<Nodes> node = data.stream()
+    							.map(this::convertToNode)
+    							.collect(Collectors.toList());
+
+        return new ResponseEntity<>(node, HttpStatus.CREATED);
     }
 
+    private Nodes convertToNode(NodesDTO data) {
+    	Nodes node = new Nodes();
+    	node.setDescription(data.getDesc());
+    	node.setCoords(data.getCoords());
+    	
+    	return node;
+    }
 }
