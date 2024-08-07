@@ -1,2 +1,2 @@
 export { ViewPlaces } from './ViewPlaces';
-export { MapContainer } from './MapContainer'
+export { MapAdmin } from './MapAdmin'

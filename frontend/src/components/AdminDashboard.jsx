@@ -3,10 +3,10 @@ import { Route, Routes, Link } from 'react-router-dom';
 import { FaBars, FaUserCircle, FaHome } from 'react-icons/fa';
 import { IoMdLogOut } from 'react-icons/io';
 import { MdGridView } from 'react-icons/md';
-import { MapContainer, ViewPlaces } from './admin';
+import { MapAdmin,  ViewPlaces } from './admin';
 
 const AdminDashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
         {/* Main Dashboard Content */}
         <div className='flex item-center justify-center flex-1'>
         <Routes>
-          <Route path='/' element={<MapContainer />} />
+          <Route path='/' element={<MapAdmin />} />
           <Route path='/viewplaces' element={<ViewPlaces />} />
         </Routes>
         </div>
