@@ -53,7 +53,7 @@ const ViewPlaces = () => {
   }
 
   return (
-    <div className='flex h-full flex-col items-center justify-center'>
+    <div className='flex h-full flex-col items-center justify-center p-4'>
       <div className='w-full flex justify-center items-center mb-4 space-x-4'>
         <div className='relative'>
           <input 
