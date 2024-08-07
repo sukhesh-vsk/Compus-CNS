@@ -3,7 +3,7 @@ import { Route, Routes, Link } from 'react-router-dom';
 import { FaBars, FaUserCircle, FaHome } from 'react-icons/fa';
 import { IoMdLogOut } from 'react-icons/io';
 import { MdGridView } from 'react-icons/md';
-import { ViewPlaces } from './admin';
+import { MapContainer, ViewPlaces } from './admin';
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -22,13 +22,13 @@ const AdminDashboard = () => {
         <hr />
         <ul className='mt-3 text-white font-semi-bold'>
           <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2'>
-            <Link to='/admindashboard' className='px-3'>
+            <Link to='/admin' className='px-3'>
               <FaHome className='inline-block w-6 h-6 mr-2 -mt-2' />
               Home
             </Link>
           </li>
           <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2 cursor-pointer'>
-            <Link to ='admindashboard/viewplaces' className='px-3'>
+            <Link to ='/admin/viewplaces' className='px-3'>
               <MdGridView className='inline-block w-6 h-6 mr-2 -mt-2' />
               View Places
             </Link>
@@ -70,10 +70,10 @@ const AdminDashboard = () => {
         </nav>
         
         {/* Main Dashboard Content */}
-        <div className='flex-1 p-4'>
+        <div className='flex item-center justify-center flex-1'>
         <Routes>
-          {/* <Route path='/admindashboard' element={<AdminDashboard />} /> */}
-          <Route path='admindashboard/viewplaces' element={<ViewPlaces />} />
+          <Route path='/' element={<MapContainer />} />
+          <Route path='/viewplaces' element={<ViewPlaces />} />
         </Routes>
         </div>
       </div>
