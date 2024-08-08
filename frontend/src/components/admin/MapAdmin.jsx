@@ -26,7 +26,15 @@ const MapAdmin = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/m/nodes')
+    const username = 'admin';
+    const password = 'admin';
+    const token = btoa(`${username}:${password}`);
+
+    axios.get('http://localhost:8080/api/m/nodes', {
+      headers: {
+        'Authorization': `Basic ${token}`
+      }
+    })
       .then((response) => {
         setNodes(response.data);
       })
