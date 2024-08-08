@@ -1,10 +1,54 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import MapImg from '../img/map-image.png'
+import axios from 'axios';
+
+const username = 'admin';
+const password = 'admin';
+const token = btoa(`${username}:${password}`);
 
 function Signup() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: '',
+    username: '',
+    password: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    axios.post("http://localhost:8080/api/u/auth/register",
+            formData,
+            {
+              headers: {
+                'Authorization': `Basic ${token}`
+              }
+            })
+            .then((response) => {
+              console.log(response);
+              if (response.status === 201) {
+                navigate('/');
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+        });
+
+    console.log(formData);
+  }
+
   return (
-    <div className="w-full h-full flex flex-col md:flex-row items-start">
+    <form className="w-full h-full flex flex-col md:flex-row items-start" onSubmit={handleSubmit}>
       <div className="relative h-1/2 md:h-full md:flex-1 flex items-center justify-center flex-col">
         <div className="absolute flex flex-col text-center md:text-left logo-text">
           <h1 className="text-2xl md:text-3xl text-[#060606] font-bold my-2">Wherever You Go,</h1>
@@ -25,16 +69,25 @@ function Signup() {
             <input
               type="email"
               placeholder="Email"
+              name='email'
+              value={formData.email}
+              onChange={handleChange}
               className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
             />
             <input
               type="text"
               placeholder="Username"
+              name='username'
+              value={formData.username}
+              onChange={handleChange}
               className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
             />
             <input
               type="password"
               placeholder="Password"
+              name='password'
+              value={formData.password}
+              onChange={handleChange}
               className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
             />
           </div>
@@ -45,9 +98,9 @@ function Signup() {
             </div>
           </div>
           <div className="w-full flex flex-col my-4">
-          <Link to="/"><button className="w-full text-white my-2 font-semibold bg-[#5DB487] rounded-md p-4 text-center flex items-center justify-center cursor-pointer">
+          <button type='submit' className="w-full text-white my-2 font-semibold bg-[#5DB487] rounded-md p-4 text-center flex items-center justify-center cursor-pointer">
               Signup
-            </button></Link>
+            </button>
           </div>
 
           <div className="w-full flex items-center justify-center relative py-2">
@@ -64,7 +117,7 @@ function Signup() {
           </p>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
