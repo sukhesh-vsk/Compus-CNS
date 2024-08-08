@@ -58,6 +58,7 @@ public class Blocks {
 
 	public String getLandmark() {
 		return landmark;
+
 	}
 	public void setLandmark(String landmark) {
 		this.landmark = landmark;
