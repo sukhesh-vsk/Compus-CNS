@@ -11,6 +11,7 @@ const bounds = [
   [10.921825692919896, 76.93112560982775]
 ];
 
+
 const FitBounds = () => {
   const map = useMap();
 

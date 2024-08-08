@@ -44,7 +44,7 @@ public class UserService {
                 return "Password mismatch";
             }
         }
-        return "Mail does not exist";
+        return "Mail does not exists";
     }
     
     public String[] hashPassword(String pwd) {
