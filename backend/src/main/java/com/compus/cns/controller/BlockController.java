@@ -45,6 +45,7 @@ public class BlockController {
         return new ResponseEntity<>("New Block Added", HttpStatus.CREATED);
     }
 
+	
     private void validateBlockData(BlocksDTO data) {
         if (data.getName() == null) {
             throw new BadRequestException("Name should not be null");
