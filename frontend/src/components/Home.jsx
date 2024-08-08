@@ -42,7 +42,7 @@ function Home() {
           : <FaBars className="hamburger-menu" onClick={toggleSidebar} />
         }
         <div className={`sidebar flex flex-col gap-4 items-start ps-5 text-slate-700 ${sidebarOpen ? 'open' : ''}`}>
-            <a href="/admindashboard" className='cursor-pointer hover:text-emerald-600'>Admin</a>
+            <a href="/admin" className='cursor-pointer hover:text-emerald-600'>Admin</a>
             <a href="/signup" className='hover:text-emerald-600'>Signup</a>
             <a href="/login" className='hover:text-emerald-600'>Login</a>
             <a className='flex flex-row justify-around items-center cursor-pointer hover:text-emerald-600' onClick={handleFavourite}>

@@ -2,14 +2,7 @@ package com.compus.cns.dto;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.compus.cns.model.Blocks;
-
-public class BlocksDTO {
-	@Autowired 
-	private Blocks data;
-	
+public class BlocksDTO {	
     private String name;
     private String description;
     private String block;
