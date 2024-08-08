@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import MapImg from '../img/map-image.png'
 import axios from 'axios';
 
@@ -8,6 +8,8 @@ const password = 'admin';
 const token = btoa(`${username}:${password}`);
 
 function Login() {
+  const navigate = useNavigate();
+
   const[formData, setFormData] = useState({
     mail: '',
     pwd: ''
@@ -32,6 +34,9 @@ function Login() {
             }}
           )
           .then((response) => {
+            if(response.status == 200) {
+              navigate('/');
+            }
             console.log(response);
           })
           .catch((error) => {``
