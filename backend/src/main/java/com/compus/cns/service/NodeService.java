@@ -19,5 +19,10 @@ public class NodeService {
 
     public List<Nodes> addNodes(List<Nodes> data) {
         return nodeRepo.saveAllAndFlush(data);
-    } 
+    }
+    
+    public Double findDistanceBWNodes(Long node1, Long node2) {
+    	Double distance = nodeRepo.getDistance(node1, node2);
+    	return distance;
+    }
 }
