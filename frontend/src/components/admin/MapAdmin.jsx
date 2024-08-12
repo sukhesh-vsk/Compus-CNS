@@ -86,7 +86,7 @@ const MapAdmin = () => {
                   (loaded) && 
                   (
                     edges.map((edge, index) => {
-                      console.log(`Mapped edge ${index} : Node 1 : `, edge.node1.coords, 'Node 2 : ', edge.node2.coords);
+                      // console.log(`Mapped edge ${index} : Node 1 : `, edge.node1.coords, 'Node 2 : ', edge.node2.coords);
                       return (
                         <Polyline key={index} positions={[[edge.node1.coords[1], edge.node1.coords[0]], [edge.node2.coords[1], edge.node2.coords[0]]]} color='blue'/>
                       )

@@ -13,7 +13,7 @@ function Home() {
   const [placeInfo, setPlaceInfo] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showFavourite, setShowFavourite] = useState(false);
-
+  
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   }
