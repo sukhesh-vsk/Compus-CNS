@@ -4,7 +4,7 @@ import { TbMapPinSearch } from 'react-icons/tb';
 export const SearchBar = ({ places, onPlaceSelect, destination }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showResults, setShowResults] = useState(false);
-
+    
     const searchData = places.map((place) => ({
         name: place.name,
         id: place.blockID.id,

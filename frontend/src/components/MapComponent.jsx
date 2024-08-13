@@ -9,7 +9,64 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import userIco from '../img/user.png';
 import axios from 'axios';
-
+const minData = [
+    [
+        10.927643178713794,
+        76.924111705369
+    ],
+    [
+        10.927776234855884,
+        76.92403435453986
+    ],
+    [
+        10.927822015720622,
+        76.92395361385229
+    ],
+    [
+        10.927923978661639,
+        76.92404406568096
+    ],
+    [
+        10.928010648071194,
+        76.92406542348812
+    ],
+    [
+        10.9280907682178,
+        76.92405317632569
+    ],
+    [
+        10.928109562134907,
+        76.92373731724621
+    ],
+    [
+        10.927893067237761,
+        76.92360501882445
+    ],
+    [
+        10.927823647329191,
+        76.92325099283312
+    ],
+    [
+        10.927344748477992,
+        76.92324574684216
+    ],
+    [
+        10.927327045338671,
+        76.9233228230591
+    ],
+    [
+        10.927178704969506,
+        76.923337514573
+    ],
+    [
+        10.92713837032339,
+        76.92321426773378
+    ],
+    [
+        10.926962258090214,
+        76.92323361730422
+    ]
+];
 const position = [10.927957575535572, 76.92397088319751];
 const bounds = [
     [10.933617318578328, 76.91699650949829],
@@ -175,7 +232,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
 
                 {/* {currentPath && console.log("Min path => ", currentPath)} */}
                 {/* Showing Minimum path */}
-                {currentPath != null && console.log("Data for minpath: ", currentPath) && <Polyline positions={currentPath} color='green'/>}
+                {currentPath != null && <Polyline positions={currentPath} color='blue'/>}
             </MapContainer>
         </div>
     );
