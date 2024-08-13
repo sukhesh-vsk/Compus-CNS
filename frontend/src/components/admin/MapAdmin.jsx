@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Marker, Polyline, TileLayer, useMap } from 'react-leaflet';
 import axios from 'axios';
 import L from 'leaflet';
 import userIco from '../../img/user.png';
@@ -10,7 +10,9 @@ const bounds = [
   [10.933617318578328, 76.91699650949829],
   [10.921825692919896, 76.93112560982775]
 ];
-
+const username = 'admin';
+const password = 'admin';
+const token = btoa(`${username}:${password}`);
 
 const FitBounds = () => {
   const map = useMap();
@@ -24,30 +26,32 @@ const FitBounds = () => {
 
 const MapAdmin = () => {
   const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const username = 'admin';
-    const password = 'admin';
-    const token = btoa(`${username}:${password}`);
-
-    axios.get('http://localhost:8080/api/m/nodes', {
+    const fetchNodes = axios.get('http://localhost:8080/api/m/nodes', {
       headers: {
-        'Authorization': `Basic ${token}`
+        Authorization: `Basic ${token}`
       }
-    })
-      .then((response) => {
-        setNodes(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
+    });
+    const fetchEdges = axios.get('http://localhost:8080/api/m/edges/view', {
+      headers: {
+        Authorization: `Basic ${token}`
+      }
+    });
+
+    axios.all([fetchNodes, fetchEdges])
+      .then(axios.spread((nodesResponse, edgesResponse) => {
+        setNodes(nodesResponse.data);
+        setEdges(edgesResponse.data);
+        setLoaded(true);
+        // console.log("Edges => ", edgesResponse.data);
+      }))
+      .catch(error => {
+        console.error('Error fetching data:', error);
       });
   }, []);
-
-  useEffect(() => {
-    setLoaded(true);
-    // console.log("nodes => ",nodes);
-  }, [nodes]);
 
   return (
     <div id="map" className='flex-1 flex justify-center items-center w-full'>
@@ -77,6 +81,18 @@ const MapAdmin = () => {
                     </Marker>
                   ))
                 }
+
+                {
+                  (loaded) && 
+                  (
+                    edges.map((edge, index) => {
+                      // console.log(`Mapped edge ${index} : Node 1 : `, edge.node1.coords, 'Node 2 : ', edge.node2.coords);
+                      return (
+                        <Polyline key={index} positions={[[edge.node1.coords[1], edge.node1.coords[0]], [edge.node2.coords[1], edge.node2.coords[0]]]} color='blue'/>
+                      )
+                    })
+                  )
+                } 
         </MapContainer>
     </div>
   )

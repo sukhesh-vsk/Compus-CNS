@@ -1,13 +1,12 @@
 package com.compus.cns.dto;
 
-import java.util.List;
-
-public class BlocksDTO {	
+public class BlocksDTO {
+	private Long blockID;
+	private String type;
     private String name;
     private String description;
     private String block;
     private String landmark;
-    private List<Double> coords;
 
     // Getters and Setters
     public String getName() {
@@ -42,11 +41,19 @@ public class BlocksDTO {
         this.landmark = landmark;
     }
 
-    public List<Double> getCoords() {
-        return coords;
-    }
+	public Long getBlockID() {
+		return blockID;
+	}
 
-    public void setCoords(List<Double> coords) {
-        this.coords = coords;
-    }
+	public void setBlockID(Long blockID) {
+		this.blockID = blockID;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

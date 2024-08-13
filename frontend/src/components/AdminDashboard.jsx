@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
-import { FaBars, FaUserCircle, FaHome } from 'react-icons/fa';
+import { FaBars, FaUserCircle, FaHome, FaUsers } from 'react-icons/fa';
 import { IoMdLogOut } from 'react-icons/io';
 import { MdGridView } from 'react-icons/md';
-import { MapAdmin,  ViewPlaces } from './admin';
+import { MapAdmin, ManageUsers, ViewPlaces } from './admin';
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -27,7 +27,13 @@ const AdminDashboard = () => {
               Home
             </Link>
           </li>
-          <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2 cursor-pointer'>
+          <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2'>
+            <Link to='/admin/manage users' className='px-3'>
+              <FaUsers className='inline-block w-6 h-6 mr-2 -mt-2' />
+              Users
+            </Link>
+          </li>
+          <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2'>
             <Link to ='/admin/viewplaces' className='px-3'>
               <MdGridView className='inline-block w-6 h-6 mr-2 -mt-2' />
               View Places
@@ -39,7 +45,7 @@ const AdminDashboard = () => {
               Add Place
             </span>
           </li> */}
-          <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2 cursor-pointer'>
+          <li className='mb-2 rounded hover:shadow hover:bg-emerald-600 py-2'>
             <a href='/login' className='px-3'>
               <IoMdLogOut className='inline-block w-6 h-6 mr-2 -mt-2' />
               Logout
@@ -73,6 +79,7 @@ const AdminDashboard = () => {
         <div className='flex item-center justify-center flex-1'>
         <Routes>
           <Route path='/' element={<MapAdmin />} />
+          <Route path='/manage users' element={<ManageUsers />} />
           <Route path='/viewplaces' element={<ViewPlaces />} />
         </Routes>
         </div>
