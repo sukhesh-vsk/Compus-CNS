@@ -42,8 +42,7 @@ public class NodeController {
             return new ResponseEntity<>("Nodes Added", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Couldn't add nodes", HttpStatus.CONFLICT);
-        }
-        
+        }   
     }
     
     @PutMapping("/update")
@@ -74,6 +73,11 @@ public class NodeController {
         }
     }
 
+    @GetMapping("/distance")
+    public ResponseEntity<Double> findDistanceBWNodes(@RequestParam Long node1, @RequestParam Long node2) {
+    	Double distance = nodeServ.findDistanceBWNodes(node1, node2);
+    	return new ResponseEntity<>(distance, HttpStatus.OK);
+    }
     
     private Nodes convertToNode(NodesDTO data) {
     	Nodes node = new Nodes();

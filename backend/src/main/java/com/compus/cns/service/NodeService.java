@@ -41,4 +41,9 @@ public class NodeService {
             return true;
         }
     }
+    
+    public Double findDistanceBWNodes(Long node1, Long node2) {
+    	Double distance = nodeRepo.getDistance(node1, node2);
+    	return distance;
+    }
 }
