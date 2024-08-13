@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +31,7 @@ public class UserController {
             User savedUser = userserve.addUser(data);
             return new ResponseEntity<>("User added with ID: " + savedUser.getId(), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>("Failed to add user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Failed to add user: " + e.getMessage(), HttpStatus.CONFLICT);
         }
 	}
 	
@@ -38,7 +41,7 @@ public class UserController {
             List<User> users = userserve.findAllUsers();
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Failed to fetch users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Failed to fetch users: " + e.getMessage(), HttpStatus.CONFLICT);
         }
 	}
 	
@@ -63,6 +66,27 @@ public class UserController {
 		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/auth/del/{id}")
+	public ResponseEntity<String> deleteId(@PathVariable int id) {
+		String deletedId = userserve.deleteId(id);
+		if(deletedId != null) {
+			return new ResponseEntity<>("Id " + deletedId + " deleted.", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Id does not exists", HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	 @PutMapping("/update/{email}")
+	 public ResponseEntity<String> update(@RequestBody User user, @PathVariable String email) {
+	     String responseMessage = userserve.update(user, email);
+	     if (responseMessage.contains("successfully")) {
+	          return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+	     } else {
+	          return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+	        }
+	 }
+
+	
 //	    public ResponseEntity<?> findByName(@PathVariable String username) {
 //		 try {
 //	            Optional<User> user = userserve.findByName(username);
@@ -76,11 +100,4 @@ public class UserController {
 //	        }
 //	    }
 	 
-//	 public ResponseEntity<?> findByEmail(@PathVariable String email) {
-//		 Optional<User> mail = userserve.findByEmail(email);
-//		 if(mail.isPresent()) {
-//			 User 
-//			 if(mail.password() == )
-//		 }
-//	 }	 
 }

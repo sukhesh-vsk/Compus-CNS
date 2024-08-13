@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
-export const DataPopup = ({ data, hidden, togglePopup }) => {
+export const DataPopup = ({ data, hidden, togglePopup, addToFavourites }) => {
   const [isFavorited, setIsFavorited] = useState(false);
 
   const handleFavoriteClick = () => {
     setIsFavorited(!isFavorited);
+    if (!isFavorited) {
+      addToFavourites(data.features[0]);
+    }
   }
 
   return (

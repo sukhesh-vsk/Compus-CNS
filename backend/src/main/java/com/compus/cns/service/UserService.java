@@ -47,6 +47,28 @@ public class UserService {
         return "Mail does not exists";
     }
     
+    public String deleteId(int id) {
+    	if(userrepo.existsById(id)) {
+    		userrepo.deleteById(id);
+    		return Integer.toString(id);
+    	} return null;
+    }
+    
+    public String update(User user, String email) {
+        Optional<User> existingUserOpt = userrepo.findByEmail(email);
+
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+            existingUser.setEmail(user.getEmail());
+            existingUser.setUsername(user.getUsername());
+            existingUser.setPassword(encodePassword.encode(user.getPassword()));
+            userrepo.save(existingUser);
+            return "User updated successfully.";
+        } else { 
+            return "User with email " + email + " not found.";
+        }
+    }
+    
     public String[] hashPassword(String pwd) {
     	String hashedPassword = encodePassword.encode(pwd);
     	return new String[] {pwd, hashedPassword};
