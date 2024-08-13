@@ -13,6 +13,7 @@ function Home() {
   const [placeInfo, setPlaceInfo] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showFavourite, setShowFavourite] = useState(false);
+  const [favourites, setFavourites] = useState([]);
   
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -24,7 +25,12 @@ function Home() {
 
   const handleFavourite = () => {
     setShowFavourite(!showFavourite);
-    console.log("Favourites toggled", !showFavourite);
+  }
+
+  const addToFavourites = (place) => {
+    if (!favourites.some(fav => fav.properties.name === place.properties.name)) {
+      setFavourites([...favourites, place]);
+    }
   }
 
   return (
@@ -52,18 +58,16 @@ function Home() {
                 </span>
             </a>
             <ul className={`flex flex-col pl-1 ${showFavourite ? 'block' : 'hidden'}`}>
-              <li className='hover:text-emerald-600 cursor-pointer'>Aroma</li>
-              <li className='hover:text-emerald-600 cursor-pointer'>PG Seminar</li>
-              <li className='hover:text-emerald-600 cursor-pointer'>Vankatram Hall</li>
-              <li className='hover:text-emerald-600 cursor-pointer'>CB2 - 103</li>
-              <li className='hover:text-emerald-600 cursor-pointer'>ZOHO Lab</li>
+              {favourites.map((fav, index) => (
+                <li key={index} className='hover:text-emerald-600 cursor-pointer'>{fav.properties.name}</li>
+              ))}
             </ul>
         </div>
       </div>
 
       <MapComponent selectedPlace={selectedPlace} markerData={setPlaceInfo} togglePopup={setShowPopup}/>
       
-      {showPopup && <DataPopup data={mapData[placeInfo]} hidden={showPopup} togglePopup={setShowPopup} />}
+      {showPopup && <DataPopup data={mapData[placeInfo]} hidden={showPopup} togglePopup={setShowPopup} addToFavourites={addToFavourites} />}
     </div>
   )
 }
