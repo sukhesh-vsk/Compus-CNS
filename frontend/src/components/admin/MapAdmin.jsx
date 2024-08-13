@@ -70,7 +70,6 @@ const MapAdmin = () => {
                     maxZoom={22}
                 />
                 <FitBounds />
-                
                 {
                   (loaded) && 
                   (nodes.map((node, index) => 

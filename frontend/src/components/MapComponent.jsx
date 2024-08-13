@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, Marker, TileLayer, useMap, GeoJSON, Popup } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, useMap, GeoJSON, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { mapData, mapLayout, minimumPath } from '../datas/data';
@@ -15,7 +15,7 @@ const bounds = [
     [10.933617318578328, 76.91699650949829],
     [10.921825692919896, 76.93112560982775]
 ];
-const location = [10.926215832597293, 76.92511344582738] 
+const location = 1;  
 const username = 'admin';
 const password = 'admin';
 const token = btoa(`${username}:${password}`);
@@ -31,7 +31,7 @@ const FitBounds = () => {
 };
 
 const userIcon = L.icon({
-    iconUrl: userIco, // Corrected the image path assignment
+    iconUrl: userIco,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
@@ -40,7 +40,7 @@ const userIcon = L.icon({
 const createCustomIcon = (label) => {
   return L.divIcon({
     className: 'custom-label',
-    html: `<div class="text-xs text-black-500 font-semibold">${label}</div>`,
+    html: `<div class="text-xs text-white font-semibold">${label}</div>`,
     iconAnchor: [15, -2]
   });
 };
@@ -55,43 +55,50 @@ const smallIcon = L.icon({
     shadowSize: [25, 25]
 });
 
-const fetchMinPath = (st, en) => {
-    axios.get(`http://localhost:8080/api/m/locate/${st}/${en}`, {
-        headers: {
-            Authorization: `Basic ${token}`
-        }
-    })
-    .then(response => {
-        setMinPath(response.data);
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
-};
-
-const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
+const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID }) => {
     const [currentPath, setCurrentPath] = useState(null);
     const [clearingPath, setClearingPath] = useState(false);
     const [mapData, setMapData] = useState([]);
     const [loaded, setLoaded] = useState(false);
-
+    
     useEffect(() => {
-        if (selectedPlace && minimumPath[selectedPlace]) {
-            setClearingPath(true);
-        } else {
+        if(destinationID != null) {
+            axios.get(`http://localhost:8080/api/m/locate/${location}/${destinationID}`, {
+                headers: {
+                    Authorization: `Basic ${token}`
+                }
+            })
+            .then(response => {
+                const pathData = response.data.map(coord => [coord[1], coord[0]]);
+                console.log(pathData)
+                setCurrentPath(pathData);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        } 
+        else {
             setCurrentPath(null);
         }
-    }, [selectedPlace]);
+    }, [destinationID]);
 
-    useEffect(() => {
-        if (clearingPath) {
-            setCurrentPath(null);
-            setTimeout(() => {
-                setCurrentPath(minimumPath[selectedPlace]);
-                setClearingPath(false);
-            }, 0);
-        }
-    }, [clearingPath, selectedPlace]);
+    // useEffect(() => {
+    //     if (selectedPlace && minimumPath[selectedPlace]) {
+    //         setClearingPath(true);
+    //     } else {
+    //         setCurrentPath(null);
+    //     }
+    // }, [selectedPlace]);
+
+    // useEffect(() => {
+    //     if (clearingPath) {
+    //         setCurrentPath(null);
+    //         setTimeout(() => {
+    //             setCurrentPath(minimumPath[selectedPlace]);
+    //             setClearingPath(false);
+    //         }, 0);
+    //     }
+    // }, [clearingPath, selectedPlace]);
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/m/blocks', {
@@ -100,6 +107,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
             }})
             .then(response => {
                 setMapData(response.data);
+                markerData(response.data);
                 setLoaded(true);
             })
             .catch(error => {
@@ -129,13 +137,14 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
 
                 {/* Adding place markers */}
                 {mapData.map((block, index) => {
+                    // console.log("Blocks:", block);
                     return (
                         <React.Fragment key={index}>
                             <Marker 
                                 position={[block.blockID.coords[1], block.blockID.coords[0]]}
                                 eventHandlers={{
                                     click: () => {
-                                        markerData(index);
+                                        markerData(block);
                                         togglePopup(true);
                                     },
                                 }}
@@ -160,12 +169,13 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup }) => {
                 } */}
 
                 {/* Adding user location marker */}
-                <Marker position={location} icon={userIcon}>
+                {/* <Marker position={location} icon={userIcon}>
                     <Popup>Your Location</Popup>
-                </Marker>
+                </Marker> */}
 
+                {/* {currentPath && console.log("Min path => ", currentPath)} */}
                 {/* Showing Minimum path */}
-                {currentPath && <ShowMinPath userLocation={location} place={currentPath} />}
+                {currentPath != null && console.log("Data for minpath: ", currentPath) && <Polyline positions={currentPath} color='green'/>}
             </MapContainer>
         </div>
     );

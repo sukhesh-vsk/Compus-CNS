@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { TbMapPinSearch } from 'react-icons/tb';
 
-export const SearchBar = ({ places, onPlaceSelect }) => {
+export const SearchBar = ({ places, onPlaceSelect, destination }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showResults, setShowResults] = useState(false);
-    const searchData = Object.keys(places).sort();
+
+    const searchData = places.map((place) => ({
+        name: place.name,
+        id: place.blockID.id,
+    })).sort((a, b) => a.name.localeCompare(b.name));
 
     const matchSearchTerm = searchData.filter((place) => {
-        return place.toLowerCase().includes(searchTerm.toLowerCase());
+        return place.name.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
     const handleDataChange = (e) => {
@@ -16,9 +20,11 @@ export const SearchBar = ({ places, onPlaceSelect }) => {
     };
 
     const handleSearch = (place) => {
-        setSearchTerm(place);
+        setSearchTerm(place.name);
         setShowResults(false);
-        onPlaceSelect(place);
+        // console.log("Place id from =>", place.id);
+        onPlaceSelect(place.id);
+        destination(place.id);
     };
 
     return (
@@ -38,14 +44,14 @@ export const SearchBar = ({ places, onPlaceSelect }) => {
             </div>
             {(showResults && matchSearchTerm.length > 0 && searchTerm !== '') && 
                 (<div className='absolute search-input mt-14 bg-white shadow-search'>
-                    {matchSearchTerm.slice(0, 8).map((place) => {
+                    {matchSearchTerm.slice(0, 8).map((place, index) => {
                         return (
                             <div 
-                                key={place}
+                                key={index}
                                 className='search-result text-sm text-slate-600 font-medium cursor-pointer my-1 hover:text-slate-700'
                                 onClick={() => handleSearch(place)}
                             >
-                                {place}
+                                {place.name}
                             </div>
                         )
                     })}

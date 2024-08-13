@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Logo from '../img/Compas logoo.png';
 import { MapComponent } from './MapComponent';
@@ -10,11 +10,19 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState("");
-  const [placeInfo, setPlaceInfo] = useState(null);
+  const [placeInfo, setPlaceInfo] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [showFavourite, setShowFavourite] = useState(false);
   const [favourites, setFavourites] = useState([]);
   
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [destination, setDestination] = useState(null);
+
+  useEffect(() => {
+    if(placeInfo != null)
+      setSearchVisible(true);
+  }, [placeInfo]);
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   }
@@ -39,9 +47,10 @@ function Home() {
         <div className='flex flex-col mb-0 justify-center items-center max-w-[120px] md:flex-row' onClick={reloadPage}>
           <img src={Logo} alt="Logo" className="logo h-10 md:h-12 lg:h-14" /><p className='text-sm md:text-xl ps-2 logo-title'>Compus</p>
         </div>
-        
-        <SearchBar places={mapData} onPlaceSelect={setSelectedPlace} />
-        
+        {(searchVisible && placeInfo != null) && (
+          <SearchBar places={placeInfo} onPlaceSelect={setSelectedPlace} destination={setDestination}/>
+        )}
+
         {
           sidebarOpen 
           ? <FaTimes className="close-icon" onClick={toggleSidebar} />
@@ -64,10 +73,10 @@ function Home() {
             </ul>
         </div>
       </div>
-
-      <MapComponent selectedPlace={selectedPlace} markerData={setPlaceInfo} togglePopup={setShowPopup}/>
       
-      {showPopup && <DataPopup data={mapData[placeInfo]} hidden={showPopup} togglePopup={setShowPopup} addToFavourites={addToFavourites} />}
+      <MapComponent selectedPlace={selectedPlace} markerData={setPlaceInfo} togglePopup={setShowPopup} destinationID={destination}/>
+  
+      {showPopup && <DataPopup data={placeInfo} hidden={showPopup} togglePopup={setShowPopup} />}
     </div>
   )
 }
