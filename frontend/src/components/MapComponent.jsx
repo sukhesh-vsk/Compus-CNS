@@ -9,64 +9,8 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import userIco from '../img/user.png';
 import axios from 'axios';
-const minData = [
-    [
-        10.927643178713794,
-        76.924111705369
-    ],
-    [
-        10.927776234855884,
-        76.92403435453986
-    ],
-    [
-        10.927822015720622,
-        76.92395361385229
-    ],
-    [
-        10.927923978661639,
-        76.92404406568096
-    ],
-    [
-        10.928010648071194,
-        76.92406542348812
-    ],
-    [
-        10.9280907682178,
-        76.92405317632569
-    ],
-    [
-        10.928109562134907,
-        76.92373731724621
-    ],
-    [
-        10.927893067237761,
-        76.92360501882445
-    ],
-    [
-        10.927823647329191,
-        76.92325099283312
-    ],
-    [
-        10.927344748477992,
-        76.92324574684216
-    ],
-    [
-        10.927327045338671,
-        76.9233228230591
-    ],
-    [
-        10.927178704969506,
-        76.923337514573
-    ],
-    [
-        10.92713837032339,
-        76.92321426773378
-    ],
-    [
-        10.926962258090214,
-        76.92323361730422
-    ]
-];
+import { kdTree } from 'kd-tree-javascript';
+
 const position = [10.927957575535572, 76.92397088319751];
 const bounds = [
     [10.933617318578328, 76.91699650949829],
@@ -112,14 +56,49 @@ const smallIcon = L.icon({
     shadowSize: [25, 25]
 });
 
+function distance(a, b) {
+    return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
+};
+
+function getClosestNode(nodes, pos) {
+    const tree = new kdTree(
+        nodes.map(node => [node.blockID.coords[1], node.blockID.coords[0]]), 
+        distance,
+        [0, 1]
+    );
+    const closestNode = tree.nearest(pos, 1);
+
+    console.log("Closest Node => ", closestNode);
+}
+
 const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID }) => {
     const [currentPath, setCurrentPath] = useState(null);
     const [clearingPath, setClearingPath] = useState(false);
     const [mapData, setMapData] = useState([]);
     const [loaded, setLoaded] = useState(false);
-    
+    const [userPosition, setUserPosition] = useState(null);
+
+    useEffect(() => {
+        if ("geolocation" in navigator) {
+          const watchId = navigator.geolocation.watchPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              setUserPosition([latitude, longitude]);
+            },
+            (error) => {
+              console.error("Error retrieving user position:", error);
+            },
+            { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
+          );
+          return () => navigator.geolocation.clearWatch(watchId);
+        } else {
+          console.log("Geolocation not available");
+        }
+      }, []);
+
     useEffect(() => {
         if(destinationID != null) {
+            getClosestNode(mapData, userPosition);
             axios.get(`http://localhost:8080/api/m/locate/${location}/${destinationID}`, {
                 headers: {
                     Authorization: `Basic ${token}`
@@ -127,7 +106,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
             })
             .then(response => {
                 const pathData = response.data.map(coord => [coord[1], coord[0]]);
-                console.log(pathData)
+                // console.log(pathData)
                 setCurrentPath(pathData);
             })
             .catch(error => {
@@ -172,6 +151,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
             }); 
     }, []);
 
+    console.log("Blocks Data : ", mapData);
     return (
         <div id="map">
             <MapContainer 
@@ -185,8 +165,8 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
                     zoom={18}
-                    minZoom={17}
-                    maxZoom={20}
+                    // minZoom={17}
+                    // maxZoom={20}
                 />
 
                 {/* Setting initial bound to load */}
@@ -215,7 +195,22 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                         </React.Fragment>
                     );
                 })}
-
+                    
+                    {/* Adding user location marker */}
+                    {
+                        userPosition && 
+                        <React.Fragment>
+                            <Marker 
+                                position={userPosition}
+                                icon={smallIcon}
+                            />
+                            <Marker
+                                position={userPosition}
+                                icon={createCustomIcon("Your Location")}
+                                interactive={false}
+                            />
+                        </React.Fragment>
+                    }
                 {/* Adding building blocks */}
                 {/* {
                     Object.keys(mapLayout).map((key, index) => {
