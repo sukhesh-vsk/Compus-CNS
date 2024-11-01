@@ -38,6 +38,28 @@ const userIcon = L.icon({
     popupAnchor: [0, -32]
 });
 
+const placeMarker = (blockData, index) => {
+    return (
+        <React.Fragment key={index}>
+            <Marker 
+                position={[blockData.blockID.coords[1], blockData.blockID.coords[0]]}
+                eventHandlers={{
+                    click: () => {
+                        markerData(blockData);
+                        togglePopup(true);
+                    },
+                }}
+                icon={smallIcon}
+            />
+            <Marker
+                position={[blockData.blockID.coords[1], blockData.blockID.coords[0]]}
+                icon={createCustomIcon(blockData.name)}
+                interactive={false}
+            />
+        </React.Fragment>
+    )
+}
+
 const createCustomIcon = (label) => {
   return L.divIcon({
     className: 'custom-label',
@@ -69,6 +91,7 @@ function getClosestNode(nodes, pos) {
     const closestNode = tree.nearest(pos, 1);
 
     console.log("Closest Node => ", closestNode);
+    return closestNode[0][0];
 }
 
 const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID }) => {
@@ -98,7 +121,9 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
 
     useEffect(() => {
         if(destinationID != null) {
-            getClosestNode(mapData, userPosition);
+            console.log("User Pos : ", userPosition);
+            const nearNode = getClosestNode(mapData, userPosition);
+            // <Polyline positions={[userPosition, nearNode]} color='blue' />
             axios.get(`http://localhost:8080/api/m/locate/${location}/${destinationID}`, {
                 headers: {
                     Authorization: `Basic ${token}`
@@ -106,7 +131,11 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
             })
             .then(response => {
                 const pathData = response.data.map(coord => [coord[1], coord[0]]);
-                // console.log(pathData)
+                // const t = pathData;
+                pathData.splice(0, 1, userPosition, nearNode);
+
+                // console.log("Near node : ", nearNode);
+                console.log("Path Data -> ", pathData)
                 setCurrentPath(pathData);
             })
             .catch(error => {
@@ -176,23 +205,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                 {mapData.map((block, index) => {
                     // console.log("Blocks:", block);
                     return (
-                        <React.Fragment key={index}>
-                            <Marker 
-                                position={[block.blockID.coords[1], block.blockID.coords[0]]}
-                                eventHandlers={{
-                                    click: () => {
-                                        markerData(block);
-                                        togglePopup(true);
-                                    },
-                                }}
-                                icon={smallIcon}
-                            />
-                            <Marker
-                                position={[block.blockID.coords[1], block.blockID.coords[0]]}
-                                icon={createCustomIcon(block.name)}
-                                interactive={false}
-                            />
-                        </React.Fragment>
+                        placeMarker(block, index)
                     );
                 })}
                     
