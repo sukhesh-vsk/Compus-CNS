@@ -38,6 +38,28 @@ const userIcon = L.icon({
     popupAnchor: [0, -32]
 });
 
+const placeMarker = (blockData, index) => {
+    return (
+        <React.Fragment key={index}>
+            <Marker 
+                position={[blockData.blockID.coords[1], blockData.blockID.coords[0]]}
+                eventHandlers={{
+                    click: () => {
+                        markerData(blockData);
+                        togglePopup(true);
+                    },
+                }}
+                icon={smallIcon}
+            />
+            <Marker
+                position={[blockData.blockID.coords[1], blockData.blockID.coords[0]]}
+                icon={createCustomIcon(blockData.name)}
+                interactive={false}
+            />
+        </React.Fragment>
+    )
+}
+
 const createCustomIcon = (label) => {
   return L.divIcon({
     className: 'custom-label',
@@ -73,10 +95,15 @@ function getClosestNode(nodes, pos) {
         ["coords"]
     );
 
+<<<<<<< HEAD
     const [closestNode, dist] = tree.nearest({ coords: pos }, 1)[0]; 
 
     console.log("Closest Node => ", closestNode.coords, "with ID:", closestNode.id);
     return closestNode;
+=======
+    console.log("Closest Node => ", closestNode);
+    return closestNode[0][0];
+>>>>>>> origin/sk/feat
 }
 
 const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID }) => {
@@ -116,21 +143,38 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
     }, [destinationID, mapData, userPosition]);
     
     useEffect(() => {
+<<<<<<< HEAD
         if (closestNode && destinationID != null) {
             // console.log("Temp : " + closestNode.id);
     
             axios.get(`http://localhost:8080/api/m/locate/${closestNode.id}/${destinationID}`, {
+=======
+        if(destinationID != null) {
+            console.log("User Pos : ", userPosition);
+            const nearNode = getClosestNode(mapData, userPosition);
+            // <Polyline positions={[userPosition, nearNode]} color='blue' />
+            axios.get(`http://localhost:8080/api/m/locate/${location}/${destinationID}`, {
+>>>>>>> origin/sk/feat
                 headers: {
                     Authorization: `Basic ${token}`
                 }
             })
             .then(response => {
                 const pathData = response.data.map(coord => [coord[1], coord[0]]);
+<<<<<<< HEAD
                 
                 if(pathData.lenght !== 0) {
                     const updatedPath = [userPosition, ...pathData];
                     setCurrentPath(updatedPath);
                 }
+=======
+                // const t = pathData;
+                pathData.splice(0, 1, userPosition, nearNode);
+
+                // console.log("Near node : ", nearNode);
+                console.log("Path Data -> ", pathData)
+                setCurrentPath(pathData);
+>>>>>>> origin/sk/feat
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -186,6 +230,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
                     zoom={18}
+                    accessToken={import.meta.env.VITE_STADIA_API_KEY}
                     // minZoom={17}
                     // maxZoom={20}
                 />
@@ -197,23 +242,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                 {mapData.map((block, index) => {
                     // console.log("Blocks:", block);
                     return (
-                        <React.Fragment key={index}>
-                            <Marker 
-                                position={[block.blockID.coords[1], block.blockID.coords[0]]}
-                                eventHandlers={{
-                                    click: () => {
-                                        markerData(block);
-                                        togglePopup(true);
-                                    },
-                                }}
-                                icon={smallIcon}
-                            />
-                            <Marker
-                                position={[block.blockID.coords[1], block.blockID.coords[0]]}
-                                icon={createCustomIcon(block.name)}
-                                interactive={false}
-                            />
-                        </React.Fragment>
+                        placeMarker(block, index)
                     );
                 })}
                     
