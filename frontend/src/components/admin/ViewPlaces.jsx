@@ -56,18 +56,37 @@ const ViewPlaces = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (editingIndex !== null) {
-      const updatedPlaces = places.map((place, index) => 
-        index === editingIndex ? newPlace : place
-      );
-      setPlaces(updatedPlaces);
-      setEditingIndex(null);
-    } else {
-      setPlaces([...places, newPlace]);
-    }
-    setNewPlace({ id: '', coords: '', description: '' });
-    setIsPopupOpen(false);
-  }
+    const nodeData = {
+      id: newPlace.id,
+      coords: newPlace.coords.split(',').map(Number),
+      desc: newPlace.description,
+    };
+
+    const axiosRequest = editingIndex !== null
+      ? axios.put(`http://localhost:8080/api/m/nodes/update`, nodeData, {
+            headers: { Authorization: `Basic ${token}` }
+        })
+      : axios.post(`http://localhost:8080/api/m/nodes/add`, [nodeData], {
+            headers: { Authorization: `Basic ${token}` }
+        });
+
+    axiosRequest
+      .then(response => {
+        if (editingIndex !== null) {
+          const updatedPlaces = [...places];
+          updatedPlaces[editingIndex] = nodeData;
+          setPlaces(updatedPlaces);
+        } else {
+          setPlaces([...places, nodeData]);
+        }
+        setNewPlace({ id: '', coords: '', description: '' });
+        setIsPopupOpen(false);
+        setEditingIndex(null);
+      })
+      .catch(error => {
+        console.log("Error adding/updating node:", error);
+      });
+  };
 
   const handleCancelClick = () => {
     setIsPopupOpen(false);
@@ -81,12 +100,31 @@ const ViewPlaces = () => {
 
   const handleEditClick = (index) => {
     setEditingIndex(index);
-    setNewPlace(places[index]);
+    setNewPlace({
+      id: places[index].id,
+      coords: places[index].coords.join(','),
+      description: places[index].description,
+    });
     setIsPopupOpen(true);
   }
 
   const handleDeleteClick = (index) => {
-    setPlaces(places.filter((_, i) => i !== index));
+    const placeToDelete = places[index];
+
+    // Delete the place from the backend
+    axios.delete(`http://localhost:8080/api/m/nodes/delete`, {
+      headers: {
+        Authorization: `Basic ${token}`
+      },
+      params: { id: placeToDelete.id } // Send the ID for deletion
+    })
+    .then(() => {
+      // After successfully deleting from backend, remove from the frontend list
+      setPlaces(places.filter((_, i) => i !== index));
+    })
+    .catch(error => {
+      console.log("Error deleting node:", error);
+    });
   }
 
   const filteredPlaces = showBlocks
@@ -195,19 +233,17 @@ const ViewPlaces = () => {
             {filteredPlaces.map((place, index) => (
               <tr key={index} className='text-center'>
                 <td className='py-2 px-4 border border-gray-300'>{place.id}</td>
-                <td className='py-2 px-4 border border-gray-300'>{place.coords[0]}, {place.coords[1]}</td>
-                <td className='py-2 px-4 border border-gray-300 whitespace-normal break-all'>{place.description}</td>
-                <td className='py-2 px-4 border border-gray-300 text-center'>
-                  <MdEditLocationAlt 
-                    className='text-blue-500 cursor-pointer inline-block text-xl hover:text-2xl' 
-                    onClick={() => handleEditClick(index)} 
-                  />
+                <td className='py-2 px-4 border border-gray-300'>{place.coords.join(', ')}</td>
+                <td className='py-2 px-4 border border-gray-300'>{place.description}</td>
+                <td className='py-2 px-4 border border-gray-300'>
+                  <button onClick={() => handleEditClick(index)}>
+                    <MdEditLocationAlt className='text-emerald-500 cursor-pointer hover:text-emerald-700' />
+                  </button>
                 </td>
-                <td className='py-2 px-4 border border-gray-300 text-center'>
-                  <IoTrash 
-                    className='text-red-500 cursor-pointer inline-block text-xl hover:text-2xl' 
-                    onClick={() => handleDeleteClick(index)} 
-                  />
+                <td className='py-2 px-4 border border-gray-300'>
+                  <button onClick={() => handleDeleteClick(index)}>
+                    <IoTrash className='text-red-500 cursor-pointer hover:text-red-700' />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -216,6 +252,6 @@ const ViewPlaces = () => {
       </div>
     </div>
   );
-}
+};
 
 export { ViewPlaces };
