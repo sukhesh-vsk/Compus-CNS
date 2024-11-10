@@ -62,13 +62,21 @@ function distance(a, b) {
 
 function getClosestNode(nodes, pos) {
     const tree = new kdTree(
-        nodes.map(node => [node.blockID.coords[1], node.blockID.coords[0]]), 
-        distance,
-        [0, 1]
+        nodes.map(node => ({
+            coords: [node.blockID.coords[1], node.blockID.coords[0]],
+            id: node.blockID.id 
+        })),
+        (a, b) => {
+            console.log({"a: ": a.id, " b: ": b.id});
+            distance(a.coords, b.coords)
+        },
+        ["coords"]
     );
-    const closestNode = tree.nearest(pos, 1);
 
-    console.log("Closest Node => ", closestNode);
+    const [closestNode, dist] = tree.nearest({ coords: pos }, 1)[0]; 
+
+    console.log("Closest Node => ", closestNode.coords, "with ID:", closestNode.id);
+    return closestNode;
 }
 
 const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID }) => {
@@ -77,6 +85,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
     const [mapData, setMapData] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [userPosition, setUserPosition] = useState(null);
+    const [closestNode, setClosestNode] = useState(null);
 
     useEffect(() => {
         if ("geolocation" in navigator) {
@@ -84,7 +93,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
             (position) => {
               const { latitude, longitude } = position.coords;
               setUserPosition([latitude, longitude]);
-              console.log("User is in " + position.coords.latitude + " long: " + position.coords.longitude);
+            //   console.log("User is in " + position.coords.latitude + " long: " + position.coords.longitude);
             },
             (error) => {
               console.error("Error retrieving user position:", error);
@@ -97,27 +106,38 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
         }
       }, []);      
 
+      useEffect(() => {
+        if (destinationID != null) {
+            const closest = getClosestNode(mapData, userPosition);
+            setClosestNode(closest);
+        } else {
+            setCurrentPath(null);
+        }
+    }, [destinationID, mapData, userPosition]);
+    
     useEffect(() => {
-        if(destinationID != null) {
-            getClosestNode(mapData, userPosition);
-            axios.get(`http://localhost:8080/api/m/locate/${location}/${destinationID}`, {
+        if (closestNode && destinationID != null) {
+            // console.log("Temp : " + closestNode.id);
+    
+            axios.get(`http://localhost:8080/api/m/locate/${closestNode.id}/${destinationID}`, {
                 headers: {
                     Authorization: `Basic ${token}`
                 }
             })
             .then(response => {
                 const pathData = response.data.map(coord => [coord[1], coord[0]]);
-                // console.log(pathData)
-                setCurrentPath(pathData);
+                
+                if(pathData.lenght !== 0) {
+                    const updatedPath = [userPosition, ...pathData];
+                    setCurrentPath(updatedPath);
+                }
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-        } 
-        else {
-            setCurrentPath(null);
         }
-    }, [destinationID]);
+    }, [closestNode, destinationID, userPosition]);
+    
 
     // useEffect(() => {
     //     if (selectedPlace && minimumPath[selectedPlace]) {
