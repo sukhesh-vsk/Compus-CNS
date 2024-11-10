@@ -100,7 +100,6 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
     const [mapData, setMapData] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [userPosition, setUserPosition] = useState(null);
-
     useEffect(() => {
         if ("geolocation" in navigator) {
           const watchId = navigator.geolocation.watchPosition(
@@ -194,6 +193,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg"
                     zoom={18}
+                    accessToken={import.meta.env.VITE_STADIA_API_KEY}
                     // minZoom={17}
                     // maxZoom={20}
                 />
