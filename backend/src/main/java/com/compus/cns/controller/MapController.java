@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.compus.cns.service.MapService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/m")
 public class MapController {
 	@Autowired

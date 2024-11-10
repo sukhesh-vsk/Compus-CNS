@@ -84,17 +84,18 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
             (position) => {
               const { latitude, longitude } = position.coords;
               setUserPosition([latitude, longitude]);
+              console.log("User is in " + position.coords.latitude + " long: " + position.coords.longitude);
             },
             (error) => {
               console.error("Error retrieving user position:", error);
             },
-            { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
           );
           return () => navigator.geolocation.clearWatch(watchId);
         } else {
           console.log("Geolocation not available");
         }
-      }, []);
+      }, []);      
 
     useEffect(() => {
         if(destinationID != null) {
@@ -145,13 +146,13 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                 setMapData(response.data);
                 markerData(response.data);
                 setLoaded(true);
+                console.log("Blocks Data : ", mapData);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             }); 
     }, []);
 
-    console.log("Blocks Data : ", mapData);
     return (
         <div id="map">
             <MapContainer 

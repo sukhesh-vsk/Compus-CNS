@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/m/nodes")
-@CrossOrigin(origins = "http://localhost:5173")
 public class NodeController {
     @Autowired
     private NodeService nodeServ;
