@@ -111,15 +111,13 @@ const ViewPlaces = () => {
   const handleDeleteClick = (index) => {
     const placeToDelete = places[index];
 
-    // Delete the place from the backend
     axios.delete(`http://localhost:8080/api/m/nodes/delete`, {
       headers: {
         Authorization: `Basic ${token}`
       },
-      params: { id: placeToDelete.id } // Send the ID for deletion
+      params: { desc: placeToDelete.description } 
     })
     .then(() => {
-      // After successfully deleting from backend, remove from the frontend list
       setPlaces(places.filter((_, i) => i !== index));
     })
     .catch(error => {
