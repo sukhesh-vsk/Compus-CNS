@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   return (
     <div className='flex h-full'>
       {/* Sidebar */}
-      <div className={`h-full px-4 py-2 h-full transition-transform shadow-2xl ${sidebarOpen ? 'translate-x-0' : '-translate-x-64'} w-64 bg-[#5DB487]`}>
+      <div className={`px-4 py-2 transition-transform shadow-2xl ${sidebarOpen ? 'translate-x-0' : '-translate-x-64'} w-64 bg-[#5DB487]`}>
         <div className='my-2 mb-4'>
           <h1 className='text-2xl text-white font-semibold'>Admin Dashboard</h1>
         </div>
