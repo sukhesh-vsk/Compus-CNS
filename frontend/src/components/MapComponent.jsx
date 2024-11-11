@@ -95,15 +95,10 @@ function getClosestNode(nodes, pos) {
         ["coords"]
     );
 
-<<<<<<< HEAD
     const [closestNode, dist] = tree.nearest({ coords: pos }, 1)[0]; 
 
     console.log("Closest Node => ", closestNode.coords, "with ID:", closestNode.id);
     return closestNode;
-=======
-    console.log("Closest Node => ", closestNode);
-    return closestNode[0][0];
->>>>>>> origin/sk/feat
 }
 
 const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID }) => {
@@ -143,38 +138,21 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
     }, [destinationID, mapData, userPosition]);
     
     useEffect(() => {
-<<<<<<< HEAD
         if (closestNode && destinationID != null) {
             // console.log("Temp : " + closestNode.id);
     
-            axios.get(`http://localhost:8080/api/m/locate/${closestNode.id}/${destinationID}`, {
-=======
-        if(destinationID != null) {
-            console.log("User Pos : ", userPosition);
-            const nearNode = getClosestNode(mapData, userPosition);
-            // <Polyline positions={[userPosition, nearNode]} color='blue' />
-            axios.get(`http://localhost:8080/api/m/locate/${location}/${destinationID}`, {
->>>>>>> origin/sk/feat
+            axios.get(`/cns/api/m/locate/${closestNode.id}/${destinationID}`, {
                 headers: {
                     Authorization: `Basic ${token}`
                 }
             })
             .then(response => {
                 const pathData = response.data.map(coord => [coord[1], coord[0]]);
-<<<<<<< HEAD
                 
                 if(pathData.lenght !== 0) {
                     const updatedPath = [userPosition, ...pathData];
                     setCurrentPath(updatedPath);
                 }
-=======
-                // const t = pathData;
-                pathData.splice(0, 1, userPosition, nearNode);
-
-                // console.log("Near node : ", nearNode);
-                console.log("Path Data -> ", pathData)
-                setCurrentPath(pathData);
->>>>>>> origin/sk/feat
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -202,15 +180,18 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
     // }, [clearingPath, selectedPlace]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/m/blocks', {
+        axios.get('http://100.127.36.37:8080/api/m/blocks', 
+            {
             headers: {
                 Authorization: `Basic ${token}`
-            }})
+            }}
+        )
             .then(response => {
                 setMapData(response.data);
                 markerData(response.data);
                 setLoaded(true);
                 console.log("Blocks Data : ", mapData);
+                console.log("Loaded => ", response);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
