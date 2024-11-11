@@ -21,7 +21,7 @@ import com.compus.cns.service.EdgeService;
 
 @RestController
 @RequestMapping("/api/m/edges")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
 public class EdgeController {
     @Autowired
     private EdgeService edgeServ;

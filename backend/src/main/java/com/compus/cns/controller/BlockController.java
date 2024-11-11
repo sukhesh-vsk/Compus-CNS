@@ -23,7 +23,6 @@ import com.compus.cns.service.BlockService;
 
 @RestController
 @RequestMapping("/api/m/blocks")
-@CrossOrigin(origins = "http://localhost:5173")
 public class BlockController {
 	@Autowired
 	private BlockService blockServ;
