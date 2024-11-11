@@ -1,6 +1,7 @@
 package com.compus.cns.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,16 @@ public class NodeService {
         return nodeRepo.saveAllAndFlush(data);
     } 
     
-    public List<Nodes> updateNodesByDesc(String desc, double[] coords) {
-        List<Nodes> nodes = nodeRepo.findByDescription(desc);
-        if (nodes != null && !nodes.isEmpty()) {
-            for (Nodes node : nodes) {
-                node.setCoords(coords);
-                nodeRepo.save(node);
-            }
+    public boolean updateNodeById(Long id, double[] coords, String desc) {
+        Optional<Nodes> optionalNode = nodeRepo.findById(id);
+        if (optionalNode.isPresent()) {
+            Nodes node = optionalNode.get();
+            node.setCoords(coords);
+            node.setDescription(desc);
+            nodeRepo.save(node);
+            return true;
         }
-        return nodes;
+        return false;
     }
     
     public boolean deleteNodeByDescription(String desc) {

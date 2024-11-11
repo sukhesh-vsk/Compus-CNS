@@ -45,13 +45,13 @@ public class NodeController {
     }
     
     @PutMapping("/update")
-    public ResponseEntity<String> updateNodes(@RequestBody NodesDTO data) {
+    public ResponseEntity<String> updateNode(@RequestBody NodesDTO data) {
         try {
-            List<Nodes> updatedNodes = nodeServ.updateNodesByDesc(data.getDesc(), data.getCoords());
-            if (updatedNodes != null && !updatedNodes.isEmpty()) {
-                return new ResponseEntity<>("Nodes Updated", HttpStatus.OK);
+            boolean isUpdated = nodeServ.updateNodeById(data.getId(), data.getCoords(), data.getDesc());
+            if (isUpdated) {
+                return new ResponseEntity<>("Node Updated", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Node with the given description not found", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Node not found", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             return new ResponseEntity<>("Couldn't update node", HttpStatus.CONFLICT);
@@ -68,7 +68,7 @@ public class NodeController {
                 return new ResponseEntity<>("Node with description '" + desc + "' not found", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            return new ResponseEntity<>("Couldn't delete node", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Couldn't delete node due to server error", HttpStatus.CONFLICT);
         }
     }
 
@@ -79,10 +79,13 @@ public class NodeController {
     }
     
     private Nodes convertToNode(NodesDTO data) {
-    	Nodes node = new Nodes();
-    	node.setDescription(data.getDesc());
-    	node.setCoords(data.getCoords());
-    	
-    	return node;
+        Nodes node = new Nodes();
+        if (data.getId() != null) {
+            node.setId(data.getId());
+        }
+        node.setDescription(data.getDesc());
+        node.setCoords(data.getCoords());
+        
+        return node;
     }
 }
