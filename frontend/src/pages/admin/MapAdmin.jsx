@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { MapContainer, Marker, Polyline, TileLayer, useMap } from 'react-leaflet';
 import axios from 'axios';
 import L from 'leaflet';
-import userIco from '../../img/user.png';
+import userIco from '/img/user.png';
 import 'leaflet/dist/leaflet.css';
 
 const position = [10.927957575535572, 76.92397088319751];

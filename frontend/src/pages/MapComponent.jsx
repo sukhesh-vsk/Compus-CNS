@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MapContainer, TileLayer, useMap, Polyline } from 'react-leaflet';
-import { PlaceMarker } from '../utils/MapUtils';
 import { createCustomIcon, smallIcon } from '../utils/MarkerIcons';
 import { getClosestNode, getUserLocation } from '../utils/NavigationUtils';
 import { ShowMinPath } from '../hooks';
 import 'leaflet/dist/leaflet.css';
+import { PlaceMarker } from '../components';
 
 const position = [10.927957575535572, 76.92397088319751];
 const bounds = [

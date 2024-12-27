@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import Logo from '../img/Compas logoo.png';
+import Logo from '/img/Compas logoo.png';
 import { MapComponent } from './MapComponent';
-import { SearchBar } from './SearchBar';
-import { DataPopup } from './DataPopup';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { DataPopup, SearchBar } from '../components';
 
 function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
