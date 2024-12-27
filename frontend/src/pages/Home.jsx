@@ -73,7 +73,7 @@ function Home() {
       </div>
       
       <MapComponent setSelectedPlaceData={setSelectedPlace} markerData={setPlaceInfo} togglePopup={setShowPopup} destinationID={destination}/>
-  
+      
       {showPopup && <DataPopup data={selectedPlace} hidden={showPopup} togglePopup={setShowPopup} />}
     </div>
   )
