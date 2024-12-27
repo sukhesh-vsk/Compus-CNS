@@ -1,9 +1,9 @@
 import React from "react";
 import { Marker } from "react-leaflet";
 
-const PlaceMarker = ({markerPos, markerIcon, labelIcon, index, eventHandler}) => {
+const PlaceMarker = ({markerPos, markerIcon, labelIcon, eventHandler}) => {
   return (
-    <React.Fragment key={index}>
+    <React.Fragment>
         <Marker 
             position={markerPos}
             eventHandlers={eventHandler}
