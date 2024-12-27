@@ -27,7 +27,7 @@ const FitBounds = () => {
     return null;
 };
 
-const MapComponent = ({ markerData, togglePopup, destinationID }) => {
+const MapComponent = ({ markerData, togglePopup, destinationID, setSelectedPlaceData }) => {
     const [currentPath, setCurrentPath] = useState(null);
     const [mapData, setMapData] = useState([]);
     const [loaded, setLoaded] = useState(false);
@@ -116,10 +116,10 @@ const MapComponent = ({ markerData, togglePopup, destinationID }) => {
                             markerPos={[block.blockID.coords[1], block.blockID.coords[0]]}
                             markerIcon={smallIcon}
                             labelIcon={createCustomIcon(block.name)}
-                            index={index}
+                            key={index}
                             eventHandler={{
                                 click: () => {
-                                    markerData(block);
+                                    setSelectedPlaceData(block);
                                     togglePopup(true);
                                 },
                             }}
