@@ -3,7 +3,6 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import Logo from '../img/Compas logoo.png';
 import { MapComponent } from './MapComponent';
 import { SearchBar } from './SearchBar';
-import { mapData } from '../datas/data';
 import { DataPopup } from './DataPopup';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 

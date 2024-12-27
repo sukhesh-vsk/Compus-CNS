@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, Marker, TileLayer, useMap, GeoJSON, Popup, Polyline } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import { mapData, mapLayout, minimumPath } from '../datas/data';
-import { ShowMinPath } from '../hooks';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import userIco from '../img/user.png';
 import axios from 'axios';
-import { kdTree } from 'kd-tree-javascript';
+import { MapContainer, TileLayer, useMap, Polyline } from 'react-leaflet';
+import { PlaceMarker } from '../utils/MapUtils';
+import { createCustomIcon, smallIcon } from '../utils/MarkerIcons';
+import { getClosestNode, getUserLocation } from '../utils/NavigationUtils';
+import { ShowMinPath } from '../hooks';
+import 'leaflet/dist/leaflet.css';
 
 const position = [10.927957575535572, 76.92397088319751];
 const bounds = [
     [10.933617318578328, 76.91699650949829],
     [10.921825692919896, 76.93112560982775]
 ];
-const location = 1;  
+const location = 1;
 const username = 'admin';
 const password = 'admin';
 const token = btoa(`${username}:${password}`);
@@ -31,106 +27,20 @@ const FitBounds = () => {
     return null;
 };
 
-const userIcon = L.icon({
-    iconUrl: userIco,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
-});
-
-const placeMarker = (blockData, index) => {
-    return (
-        <React.Fragment key={index}>
-            <Marker 
-                position={[blockData.blockID.coords[1], blockData.blockID.coords[0]]}
-                eventHandlers={{
-                    click: () => {
-                        markerData(blockData);
-                        togglePopup(true);
-                    },
-                }}
-                icon={smallIcon}
-            />
-            <Marker
-                position={[blockData.blockID.coords[1], blockData.blockID.coords[0]]}
-                icon={createCustomIcon(blockData.name)}
-                interactive={false}
-            />
-        </React.Fragment>
-    )
-}
-
-const createCustomIcon = (label) => {
-  return L.divIcon({
-    className: 'custom-label',
-    html: `<div class="text-xs text-white font-semibold">${label}</div>`,
-    iconAnchor: [15, -2]
-  });
-};
-
-const smallIcon = L.icon({
-    iconUrl: markerIcon,
-    iconRetinaUrl: markerIcon2x,
-    shadowUrl: markerShadow,
-    iconSize: [18, 28],
-    iconAnchor: [7.5, 25],
-    popupAnchor: [0, -25],
-    shadowSize: [25, 25]
-});
-
-function distance(a, b) {
-    return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
-};
-
-function getClosestNode(nodes, pos) {
-    const tree = new kdTree(
-        nodes.map(node => ({
-            coords: [node.blockID.coords[1], node.blockID.coords[0]],
-            id: node.blockID.id 
-        })),
-        (a, b) => {
-            console.log({"a: ": a.id, " b: ": b.id});
-            distance(a.coords, b.coords)
-        },
-        ["coords"]
-    );
-
-    const [closestNode, dist] = tree.nearest({ coords: pos }, 1)[0]; 
-
-    console.log("Closest Node => ", closestNode.coords, "with ID:", closestNode.id);
-    return closestNode;
-}
-
-const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID }) => {
+const MapComponent = ({ markerData, togglePopup, destinationID }) => {
     const [currentPath, setCurrentPath] = useState(null);
-    const [clearingPath, setClearingPath] = useState(false);
     const [mapData, setMapData] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const [userPosition, setUserPosition] = useState(null);
     const [closestNode, setClosestNode] = useState(null);
 
     useEffect(() => {
-        if ("geolocation" in navigator) {
-          const watchId = navigator.geolocation.watchPosition(
-            (position) => {
-              const { latitude, longitude } = position.coords;
-              setUserPosition([latitude, longitude]);
-            //   console.log("User is in " + position.coords.latitude + " long: " + position.coords.longitude);
-            },
-            (error) => {
-              console.error("Error retrieving user position:", error);
-            },
-            { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
-          );
-          return () => navigator.geolocation.clearWatch(watchId);
-        } else {
-          console.log("Geolocation not available");
-        }
-      }, []);      
+        getUserLocation(setUserPosition);
+    }, []);
 
-      useEffect(() => {
+    useEffect(() => {
         if (destinationID != null) {
-            const closest = getClosestNode(mapData, userPosition);
+            const closest = getClosestNode(mapData, userPosition, setClosestNode);
             setClosestNode(closest);
         } else {
             setCurrentPath(null);
@@ -138,9 +48,7 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
     }, [destinationID, mapData, userPosition]);
     
     useEffect(() => {
-        if (closestNode && destinationID != null) {
-            // console.log("Temp : " + closestNode.id);
-    
+        if (closestNode && destinationID != null) {    
             axios.get(`/cns/api/m/locate/${closestNode.id}/${destinationID}`, {
                 headers: {
                     Authorization: `Basic ${token}`
@@ -159,28 +67,9 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
             });
         }
     }, [closestNode, destinationID, userPosition]);
-    
-
-    // useEffect(() => {
-    //     if (selectedPlace && minimumPath[selectedPlace]) {
-    //         setClearingPath(true);
-    //     } else {
-    //         setCurrentPath(null);
-    //     }
-    // }, [selectedPlace]);
-
-    // useEffect(() => {
-    //     if (clearingPath) {
-    //         setCurrentPath(null);
-    //         setTimeout(() => {
-    //             setCurrentPath(minimumPath[selectedPlace]);
-    //             setClearingPath(false);
-    //         }, 0);
-    //     }
-    // }, [clearingPath, selectedPlace]);
 
     useEffect(() => {
-        axios.get('http://100.127.36.37:8080/api/m/blocks', 
+        axios.get('http://localhost:8080/api/m/blocks', 
             {
             headers: {
                 Authorization: `Basic ${token}`
@@ -223,40 +112,32 @@ const MapComponent = ({ selectedPlace, markerData, togglePopup, destinationID })
                 {mapData.map((block, index) => {
                     // console.log("Blocks:", block);
                     return (
-                        placeMarker(block, index)
+                        <PlaceMarker 
+                            markerPos={[block.blockID.coords[1], block.blockID.coords[0]]}
+                            markerIcon={smallIcon}
+                            labelIcon={createCustomIcon(block.name)}
+                            index={index}
+                            eventHandler={{
+                                click: () => {
+                                    markerData(block);
+                                    togglePopup(true);
+                                },
+                            }}
+                        />
                     );
                 })}
                     
-                    {/* Adding user location marker */}
-                    {
-                        userPosition && 
-                        <React.Fragment>
-                            <Marker 
-                                position={userPosition}
-                                icon={smallIcon}
-                            />
-                            <Marker
-                                position={userPosition}
-                                icon={createCustomIcon("Your Location")}
-                                interactive={false}
-                            />
-                        </React.Fragment>
-                    }
-                {/* Adding building blocks */}
-                {/* {
-                    Object.keys(mapLayout).map((key, index) => {
-                        return (
-                            <GeoJSON key={index} data={mapLayout[key]} style={{color: "#008ECC"}} />
-                        );
-                    })
-                } */}
-
                 {/* Adding user location marker */}
-                {/* <Marker position={location} icon={userIcon}>
-                    <Popup>Your Location</Popup>
-                </Marker> */}
+                {
+                    userPosition && 
+                    <PlaceMarker
+                        markerPos={userPosition}
+                        markerIcon={smallIcon}
+                        labelIcon={createCustomIcon("Your Location")}
+                        index={"user-pos"}
+                    />
+                }
 
-                {/* {currentPath && console.log("Min path => ", currentPath)} */}
                 {/* Showing Minimum path */}
                 {currentPath != null && <Polyline positions={currentPath} color='blue'/>}
             </MapContainer>
